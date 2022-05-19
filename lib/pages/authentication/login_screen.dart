@@ -135,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             height: 5,
                                           ),
                                           CustomText(
-                                            text:'sssss',
+                                            text:'test',
                                             size: 13,
                                             color: controller.accountType ==
                                                 'Doctor'
