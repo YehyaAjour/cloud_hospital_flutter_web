@@ -15,7 +15,7 @@ class LoginScreen extends StatefulWidget {
   final GlobalKey<FormState> formStateLogin;
   final Function onSignUpSelected;
 
-  LoginScreen({@required this.onSignUpSelected,@required this.formStateLogin});
+  LoginScreen({@required this.onSignUpSelected, @required this.formStateLogin});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -23,85 +23,89 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   AuthController authController = Get.find();
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery
+        .of(context)
+        .size;
 
-    Size size = MediaQuery.of(context).size;
+    return GetBuilder<AuthController>(
+      init: AuthController(),
+      builder: (controller) {
+        return Form(
+          key: widget.formStateLogin,
+          child: Padding(
+            padding: EdgeInsets.all(
+                size.height > 770 ? 64 : size.height > 670 ? 32 : 16),
+            child: Center(
+              child: Card(
+                elevation: 4,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(25),
+                  ),
+                ),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  height: size.height *
+                      (size.height > 770 ? 0.7 : size.height > 670 ? 0.8 : 0.9),
+                  width: 500,
+                  color: Colors.white,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(40),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
 
-    return Form(
-      key: widget.formStateLogin,
-      child: Padding(
-        padding: EdgeInsets.all(size.height > 770 ? 64 : size.height > 670 ? 32 : 16),
-        child: Center(
-          child: Card(
-            elevation: 4,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(25),
-              ),
-            ),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              height: size.height * (size.height > 770 ? 0.7 : size.height > 670 ? 0.8 : 0.9),
-              width: 500,
-              color: Colors.white,
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(40),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                            Text(
+                              "تسجيل الدخول",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.grey[700],
+                              ),
+                            ),
 
-                        Text(
-                          "تسجيل الدخول",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey[700],
-                          ),
-                        ),
+                            const SizedBox(
+                              height: 8,
+                            ),
 
-                        const SizedBox(
-                          height: 8,
-                        ),
+                            const SizedBox(
+                              width: 30,
+                              child: Divider(
+                                color: primaryColor,
+                                thickness: 2,
+                              ),
+                            ),
 
-                        const SizedBox(
-                          width: 30,
-                          child: Divider(
-                            color: primaryColor,
-                            thickness: 2,
-                          ),
-                        ),
-
-                        const SizedBox(
-                          height: 32,
-                        ),
-                          CustomTextFormField(
-                            suffixIcon: Icons.mail_outline,
-                            hint: 'البريد الإلكتروني',
-                            onSaved: authController.setEmail,
-                            validator: authController.validationEmail,
-                          ),
-
-
-                        const SizedBox(
-                          height: 32,
-                        ),
-                        CustomTextFormField(
-                          suffixIcon:  Icons.lock_outline,
-                          hint: 'كلمة السر',
-                          onSaved: authController.setPassword,
-                          validator: authController.validationPassword,
-                        ),
+                            const SizedBox(
+                              height: 32,
+                            ),
+                            CustomTextFormField(
+                              suffixIcon: Icons.mail_outline,
+                              hint: 'البريد الإلكتروني',
+                              onSaved: authController.setEmail,
+                              validator: authController.validationEmail,
+                            ),
 
 
-                        const SizedBox(
-                          height: 64,
-                        ),
-                        GetBuilder(
-                          init: AuthController(),
-                          builder: (controller){
-                            return Row(
+                            const SizedBox(
+                              height: 32,
+                            ),
+                            CustomTextFormField(
+                              suffixIcon: Icons.lock_outline,
+                              hint: 'كلمة السر',
+                              onSaved: authController.setPassword,
+                              validator: authController.validationPassword,
+                            ),
+
+
+                            const SizedBox(
+                              height: 64,
+                            ),
+                            Row(
                               children: [
                                 Expanded(
                                   flex: 1,
@@ -135,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             height: 5,
                                           ),
                                           CustomText(
-                                            text:'test',
+                                            text: 'طبيب',
                                             size: 13,
                                             color: controller.accountType ==
                                                 'Doctor'
@@ -184,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             height: 5,
                                           ),
                                           CustomText(
-                                            text:  'Patient',
+                                            text: 'مريض',
                                             size: 13,
                                             color: controller.accountType ==
                                                 'patient'
@@ -233,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             height: 5,
                                           ),
                                           CustomText(
-                                            text: 'Admin',
+                                            text: 'ادمن',
                                             size: 13,
                                             color: controller.accountType ==
                                                 'admin'
@@ -246,83 +250,88 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ],
-                            );
-                          },
-
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        actionButton("تسجيل الدخول",(){
-                          if (widget.formStateLogin.currentState
-                              .validate()) {
-                            widget.formStateLogin.currentState.save();
-                            // AuthApis.authApis.login(
-                            //     authController.email, authController.password);
-                          }
-                        }),
-
-                        const SizedBox(
-                          height: 32,
-                        ),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-
-                            const Text(
-                              "لا يوجد لديك حساب?",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                              ),
                             ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            actionButton("تسجيل الدخول", () {
+                              if (widget.formStateLogin.currentState
+                                  .validate()) {
+                                widget.formStateLogin.currentState.save();
+                                if (controller.accountType == 'Doctor') {
+                                  AuthApis.authApis.login(
+                                      type:'doctor',
+                                      email: authController.email,
+                                      password: authController.password);
+                                }
+
+                              }
+                            }),
 
                             const SizedBox(
-                              width: 8,
+                              height: 32,
                             ),
 
-                            GestureDetector(
-                              onTap: () {
-                                widget.onSignUpSelected();
-                              },
-                              child: Row(
-                                children: const[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
 
-                                   Text(
-                                    "سجل الأن",
-                                    style:  TextStyle(
-                                      color: primaryColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                const Text(
+                                  "لا يوجد لديك حساب?",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
                                   ),
+                                ),
 
-                                   SizedBox(
-                                    width: 8,
+                                const SizedBox(
+                                  width: 8,
+                                ),
+
+                                GestureDetector(
+                                  onTap: () {
+                                    widget.onSignUpSelected();
+                                  },
+                                  child: Row(
+                                    children: const[
+
+                                      Text(
+                                        "سجل الأن",
+                                        style: TextStyle(
+                                          color: primaryColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+
+                                      Icon(
+                                        Icons.arrow_forward,
+                                        color: primaryColor,
+                                      ),
+
+                                    ],
                                   ),
+                                ),
 
-                                   Icon(
-                                    Icons.arrow_forward,
-                                    color: primaryColor,
-                                  ),
-
-                                ],
-                              ),
+                              ],
                             ),
 
                           ],
                         ),
-
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
+
     );
   }
 }

@@ -268,7 +268,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             height: 5,
                                           ),
                                           CustomText(
-                                            text: 'Doctor',
+                                            text: 'طبيب',
                                             size: 13,
                                             color: controller.accountType ==
                                                     'Doctor'
@@ -316,7 +316,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             height: 5,
                                           ),
                                           CustomText(
-                                            text: 'Patient',
+                                            text: 'مريض',
                                             size: 13,
                                             color: controller.accountType ==
                                                     'patient'
@@ -364,7 +364,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             height: 5,
                                           ),
                                           CustomText(
-                                            text: 'Admin',
+                                            text: 'ادمن',
                                             size: 13,
                                             color: controller.accountType ==
                                                     'admin'

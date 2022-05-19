@@ -1,5 +1,6 @@
 import 'package:cloud_hospital/constants/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
@@ -20,57 +21,13 @@ class Helper {
   }
 
   static getSheetError(String title) {
-    return Get.snackbar(
-      '',
-      '',
-      messageText: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CustomText(
-           text: title,
-            size: 16,
-            weight: FontWeight.normal,
-            color: Colors.red,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Icon(
-            Icons.info,
-            color: Colors.red,
-          ),
-        ],
-      ),
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.white,
-    );
+    return EasyLoading.showError(title,maskType: EasyLoadingMaskType.black);
+
   }
 
   static getSheetSucsses(String title) {
-    return Get.snackbar(
-      '',
-      '',
-      messageText: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CustomText(
-           text:title,
-           size: 16,
-            weight: FontWeight.normal,
-            color: Colors.green,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Icon(
-            Icons.check,
-            color: Colors.green,
-          ),
-        ],
-      ),
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.white,
-    );
+    return EasyLoading.showSuccess(title,maskType: EasyLoadingMaskType.black,);
+
   }
 
   static loading() {

@@ -1,3 +1,4 @@
+import 'package:cloud_hospital/services/sp_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,11 +17,27 @@ import 'pages/authentication/login_screen.dart';
 import 'pages/authentication/register_screen.dart';
 import 'routing/routes.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await SPHelper.spHelper.initSharedPrefrences();
   Get.put(MenuController());
   Get.put(NavigationController());
   Get.put(AuthController());
   runApp(MyApp());
+  configLoading();
+}
+void configLoading() {
+  EasyLoading.instance
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.light
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = primaryColor
+    ..backgroundColor = Colors.white
+    ..indicatorColor = primaryColor
+    ..textColor = Colors.black
+    ..dismissOnTap = false;
 }
 
 class MyApp extends StatelessWidget {
@@ -28,7 +45,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        initialRoute: authenticationPageRoute,
+        initialRoute: SPHelper.spHelper.getToken() == '' ||
+            SPHelper.spHelper.getToken() == null?'/auth':'/',
         unknownRoute: GetPage(name: '/not-found', page: () => PageNotFound(), transition: Transition.fadeIn),
         getPages: [
         GetPage(name: rootRoute, page: () {
@@ -39,13 +57,13 @@ class MyApp extends StatelessWidget {
         GetPage(name: registerPageRoute, page: () => RegisterScreen()),
       ],
       debugShowCheckedModeBanner: false,
-      title: 'Dashboard',
+      title: 'Hospital Cloud',
       theme: ThemeData(
         scaffoldBackgroundColor: light,
         textTheme: GoogleFonts.mulishTextTheme(Theme.of(context).textTheme).apply(
           bodyColor: Colors.black
         ),
-            pageTransitionsTheme: PageTransitionsTheme(
+            pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
         TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
         TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),

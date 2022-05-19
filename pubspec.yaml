@@ -43,7 +43,7 @@ dependencies:
   dio:
   flutter_easyloading:
   cached_network_image:
-  shared_preferences:
+  shared_preferences: ^2.0.15
   flutter_svg:
   fluttertoast:
 

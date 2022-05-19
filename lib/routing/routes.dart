@@ -10,10 +10,10 @@ const clientsPageDisplayName = "المرضى";
 const clientsPageRoute = "/clients";
 
 const authenticationPageDisplayName = "تسجيل خروج";
-
 const authenticationPageRoute = "/auth";
 const loginPageRoute = "/login";
 const registerPageRoute = "/register";
+const logoutPageRoute = "/logout";
 
 class MenuItem {
   final String name;
@@ -28,5 +28,5 @@ List<MenuItem> sideMenuItemRoutes = [
  MenuItem(overviewPageDisplayName, overviewPageRoute),
  MenuItem(driversPageDisplayName, driversPageRoute),
  MenuItem(clientsPageDisplayName, clientsPageRoute),
- MenuItem(authenticationPageDisplayName, loginPageRoute),
+ MenuItem(authenticationPageDisplayName, logoutPageRoute),
 ];

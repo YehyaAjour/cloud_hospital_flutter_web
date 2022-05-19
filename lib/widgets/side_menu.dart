@@ -6,6 +6,7 @@ import '../constants/controllers.dart';
 import '../constants/style.dart';
 import '../helpers/reponsiveness.dart';
 import '../routing/routes.dart';
+import '../services/sp_helper.dart';
 import 'custom_text.dart';
 import 'side_menu_item.dart';
 
@@ -57,17 +58,20 @@ class SideMenu extends StatelessWidget {
                   children: sideMenuItemRoutes
                       .map((item) => SideMenuItem(
                           itemName: item.name,
-                          onTap: () {
-                            if(item.route == loginPageRoute){
-                              Get.offAllNamed(authenticationPageRoute);
-                              menuController.changeActiveItemTo(overviewPageDisplayName);
+                          onTap: ()  {
 
-                            }
                             if (!menuController.isActive(item.name)) {
                               menuController.changeActiveItemTo(item.name);
                               if(ResponsiveWidget.isSmallScreen(context))
                               Get.back();
                               navigationController.navigateTo(item.route);
+                            }
+                            if(item.route == logoutPageRoute){
+                              menuController.changeActiveItemTo(overviewPageDisplayName);
+                              SPHelper.spHelper.removeToken();
+                               Get.offAllNamed(authenticationPageRoute);
+
+
                             }
                           }))
                       .toList(),

@@ -19,6 +19,10 @@ class SPHelper {
     sharedPreferences.setString('accessToken', value);
   }
 
+ removeToken() async {
+    sharedPreferences.remove('accessToken');
+  }
+
   String getToken() {
     String x = sharedPreferences.getString('accessToken');
     print(x);

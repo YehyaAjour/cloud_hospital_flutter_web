@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cloud_hospital/model/login_model.dart';
 import 'package:cloud_hospital/model/register_model.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as myGet;
@@ -13,7 +14,6 @@ import '../utils/constants.dart';
 import '../utils/helper.dart';
 import '../utils/progress_dialog_utils.dart';
 
-
 class AuthApis {
   AuthApis._();
 
@@ -21,7 +21,6 @@ class AuthApis {
   Dio dio;
 
   AuthController authController = myGet.Get.find();
-  // ProfileController profileController = myGet.Get.find();
 
   initDio() {
     if (dio == null) {
@@ -32,7 +31,7 @@ class AuthApis {
     }
   }
 
-  login(String type,String email, String password) async {
+  login({String type, String email, String password}) async {
     try {
       initDio();
       ProgressDialogUtils.show();
@@ -46,29 +45,31 @@ class AuthApis {
           data: data,
           options: Options(headers: {"Accept": "application/json"}));
       if (response.statusCode == 200) {
-        await SPHelper.spHelper.setToken(response.data['user']['api_token']);
+        await SPHelper.spHelper.setToken(response.data['data']['token']);//save token in shared preferences
+        authController.getLoginModelData.value =
+            LoginModel.fromJson(response.data);
+        print(" LoginModel Successfull Stored${response.data}");
+        print(SPHelper.spHelper.getToken());
 
         ProgressDialogUtils.hide();
-
-        print(response.data['user']['api_token']);
 
         myGet.Get.offAllNamed(rootRoute);
-        Helper.getSheetSucsses(response.data['msg']);
+        Helper.getSheetSucsses(response.data['message']);
       } else {
         ProgressDialogUtils.hide();
-        Helper.getSheetError(response.data['msg']);
       }
-    } catch (err) {
+    } on DioError catch (err) {
       ProgressDialogUtils.hide();
+      Helper.getSheetError(err.response.data['message']);
       print(err);
     }
   }
+
   getDepartment() async {
     try {
       initDio();
       Response response = await dio.get(
         baseUrl + departmentURL,
-
       );
       if (response.statusCode == 200) {
         authController.getDepartmentDoctorModelData.value =
@@ -88,13 +89,13 @@ class AuthApis {
       String speciality_id}) async {
     try {
       initDio();
-       ProgressDialogUtils.show();
+      ProgressDialogUtils.show();
       FormData data = FormData.fromMap(
         {
           "type": type,
           "name": name,
           "email": email,
-          "password":password,
+          "password": password,
           "speciality_id": speciality_id,
         },
       );
@@ -105,7 +106,7 @@ class AuthApis {
         data: data,
       );
       print(response.statusCode);
-      if (response.statusCode==200) {
+      if (response.statusCode == 200) {
         authController.getRegisterModelData.value =
             RegisterModel.fromJson(response.data);
         print(" RegisterModel Successfull Stored${response.data}");
@@ -113,11 +114,11 @@ class AuthApis {
         myGet.Get.offAllNamed(authenticationPageRoute);
         Helper.getSheetSucsses("تم تسجيل الاشتراك بنجاح");
       } else {
-         print(response.statusCode);
+        print(response.statusCode);
         // ProgressDialogUtils.hide();
         // Helper.getSheetError(response.data['data']);
       }
-    }on DioError catch (err) {
+    } on DioError catch (err) {
       err.response;
       ProgressDialogUtils.hide();
       print(err);
@@ -126,32 +127,32 @@ class AuthApis {
     }
   }
 
-  // logOut() async {
-  //   try {
-  //     initDio();
-  //     ProgressDialogUtils.show();
-  //     String token = SPHelper.spHelper.getToken();
-  //
-  //     Response response = await dio.post(
-  //       baseUrl + logoutUrl,
-  //       options: Options(
-  //         headers: {
-  //           'auth-token': token,
-  //         },
-  //       ),
-  //     );
-  //
-  //     if (response.data['status']) {
-  //       ProgressDialogUtils.hide();
-  //       myGet.Get.offAll(() => LoginScreen());
-  //       SPHelper.spHelper.setToken("");
-  //       Helper.getSheetSucsses(response.data['msg']);
-  //     } else {
-  //       ProgressDialogUtils.hide();
-  //     }
-  //   } catch (err) {
-  //     ProgressDialogUtils.hide();
-  //   }
-  // }
+// logOut() async {
+//   try {
+//     initDio();
+//     ProgressDialogUtils.show();
+//     String token = SPHelper.spHelper.getToken();
+//
+//     Response response = await dio.post(
+//       baseUrl + logoutUrl,
+//       options: Options(
+//         headers: {
+//           'auth-token': token,
+//         },
+//       ),
+//     );
+//
+//     if (response.data['status']) {
+//       ProgressDialogUtils.hide();
+//       myGet.Get.offAll(() => LoginScreen());
+//       SPHelper.spHelper.setToken("");
+//       Helper.getSheetSucsses(response.data['msg']);
+//     } else {
+//       ProgressDialogUtils.hide();
+//     }
+//   } catch (err) {
+//     ProgressDialogUtils.hide();
+//   }
+// }
 
 }

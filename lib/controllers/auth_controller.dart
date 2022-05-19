@@ -5,6 +5,7 @@
 
 import 'dart:io';
 
+import 'package:cloud_hospital/model/login_model.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -14,6 +15,7 @@ import '../model/register_model.dart';
 class AuthController extends GetxController {
   Rx<DepartmentDoctorModel> getDepartmentDoctorModelData = DepartmentDoctorModel().obs;
   Rx<RegisterModel> getRegisterModelData = RegisterModel().obs;
+  Rx<LoginModel> getLoginModelData = LoginModel().obs;
 
   //============UserType=============
   String accountType = 'patient';
@@ -44,33 +46,7 @@ class AuthController extends GetxController {
     }
   }
 
-  //============ReAssignPassword=============
-  String passwordRa, confirmPasswordRa;
-  setPasswordRa(String value) {
-    this.passwordRa = value;
-  }
 
-  setConfirmPasswordRa(String value) {
-    this.confirmPasswordRa = value;
-  }
-
-  validationPasswordRa(String value) {
-    if (GetUtils.isNull(value) || value.isEmpty) {
-      return "الرجاء ادخال كلمة المرور";
-    }
-    if (value.length < 8) {
-      return 'يجب ان يكون اكثر من 8 خانات';
-    }
-  }
-
-  validationConfirmPasswordRa(String value) {
-    if (GetUtils.isNull(value) || value.isEmpty) {
-      return "الرجاء ادخال تأكيد كلمة المرور";
-    }
-    // if (value != this.passwordRa) {
-    //   return 'كلمتان المرور غير متطابقتان';
-    // }
-  }
 
   //============Register=============
   String phone, emailR, nameR, passwordR, confirmPassword;
@@ -105,9 +81,9 @@ class AuthController extends GetxController {
     if (GetUtils.isNull(value) || value.isEmpty) {
       return "الرجاء ادخال بريد الكتروني";
     }
-    if (!GetUtils.isEmail(value)) {
-      return 'البريد المدخل غير صحيح';
-    }
+    // if (!GetUtils.isEmail(value)) {
+    //   return 'البريد المدخل غير صحيح';
+    // }
   }
 
   validationNameR(String value) {
