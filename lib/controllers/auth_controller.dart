@@ -25,18 +25,24 @@ class AuthController extends GetxController {
     update();
   }
   //============Login=============
-  String email, password;
+  String email,idNumber, password;
   File profilePicture;
 
   // var image = File('').obs;
   ImagePicker picker = ImagePicker();
 
   setEmail(String value) => this.email = value;
+  setIdNumber(String value) => this.idNumber = value;
   setPassword(String value) => this.password = value;
 
   validationEmail(String value) {
     if (GetUtils.isNull(value) || value.isEmpty) {
       return "الرجاء ادخال البريد الإلكتروني";
+    }
+  }
+  validationIdNumber(String value) {
+    if (GetUtils.isNull(value) || value.isEmpty) {
+      return "الرجاء ادخال رقم الهوية";
     }
   }
 
@@ -49,7 +55,7 @@ class AuthController extends GetxController {
 
 
   //============Register=============
-  String phone, emailR, nameR, passwordR, confirmPassword;
+  String phone, emailR, nameR, idNumberR , passwordR, confirmPassword;
 
   setPhone(String value) {
     this.phone = value;
@@ -61,6 +67,10 @@ class AuthController extends GetxController {
 
   setNameR(String value) {
     this.nameR = value;
+  }
+
+  setIdNumberR(String value) {
+    this.idNumberR = value;
   }
 
   setPasswordR(String value) {
@@ -89,6 +99,11 @@ class AuthController extends GetxController {
   validationNameR(String value) {
     if (GetUtils.isNull(value) || value.isEmpty) {
       return "الرجاء ادخال الاسم";
+    }
+  }
+  validationIdNumR(String value) {
+    if (GetUtils.isNull(value) || value.isEmpty) {
+      return "الرجاء ادخال رقم الهوية";
     }
   }
 

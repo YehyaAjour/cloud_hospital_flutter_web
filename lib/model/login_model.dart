@@ -24,48 +24,49 @@ class LoginModel {
 
 class Data {
   String token;
-  User user;
+  Patient patient;
 
-  Data({this.token, this.user});
+  Data({this.token, this.patient});
 
   Data.fromJson(Map<String, dynamic> json) {
     token = json['token'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    patient =
+    json['patient'] != null ? new Patient.fromJson(json['patient']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['token'] = this.token;
-    if (this.user != null) {
-      data['user'] = this.user.toJson();
+    if (this.patient != null) {
+      data['patient'] = this.patient.toJson();
     }
     return data;
   }
 }
 
-class User {
+class Patient {
   int id;
   String name;
-  String email;
-  int specialityId;
+  String idNumber;
+  String gender;
   String createdAt;
   String updatedAt;
   String type;
 
-  User(
+  Patient(
       {this.id,
         this.name,
-        this.email,
-        this.specialityId,
+        this.idNumber,
+        this.gender,
         this.createdAt,
         this.updatedAt,
         this.type});
 
-  User.fromJson(Map<String, dynamic> json) {
+  Patient.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    email = json['email'];
-    specialityId = json['speciality_id'];
+    idNumber = json['id_number'];
+    gender = json['gender'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     type = json['type'];
@@ -75,8 +76,8 @@ class User {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
-    data['email'] = this.email;
-    data['speciality_id'] = this.specialityId;
+    data['id_number'] = this.idNumber;
+    data['gender'] = this.gender;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['type'] = this.type;

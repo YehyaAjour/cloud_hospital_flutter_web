@@ -28,4 +28,18 @@ class SPHelper {
     print(x);
     return x;
   }
+
+  setUserType(String value) async {
+    sharedPreferences.setString('user_type', value);
+  }
+
+  removeUserType() async {
+    sharedPreferences.remove('user_type');
+  }
+
+  String getUserType() {
+    String x = sharedPreferences.getString('user_type');
+    print(x);
+    return x;
+  }
 }

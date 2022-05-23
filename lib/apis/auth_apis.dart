@@ -31,7 +31,7 @@ class AuthApis {
     }
   }
 
-  login({String type, String email, String password}) async {
+  loginDoctor({String type, String email, String password}) async {
     try {
       initDio();
       ProgressDialogUtils.show();
@@ -46,9 +46,83 @@ class AuthApis {
           options: Options(headers: {"Accept": "application/json"}));
       if (response.statusCode == 200) {
         await SPHelper.spHelper.setToken(response.data['data']['token']);//save token in shared preferences
+        await SPHelper.spHelper.setUserType(response.data['data']['user']['type']);//save userType in shared preferences
         authController.getLoginModelData.value =
             LoginModel.fromJson(response.data);
         print(" LoginModel Successfull Stored${response.data}");
+        print("token for user is :"+SPHelper.spHelper.getToken());
+        print("UserType for user is :"+SPHelper.spHelper.getUserType());
+
+        ProgressDialogUtils.hide();
+
+        myGet.Get.offAllNamed(rootRoute);
+        Helper.getSheetSucsses(response.data['message']);
+      } else {
+        ProgressDialogUtils.hide();
+      }
+    } on DioError catch (err) {
+      ProgressDialogUtils.hide();
+      Helper.getSheetError(err.response.data['message']);
+      print(err);
+    }
+  }
+
+  loginPatient({String type, String idNumber, String password}) async {
+    try {
+      initDio();
+      ProgressDialogUtils.show();
+
+      FormData data = FormData.fromMap({
+        'type': type,
+        'id_number': idNumber,
+        'password': password,
+      });
+      Response response = await dio.post(baseUrl + loginURL,
+          data: data,
+          options: Options(headers: {"Accept": "application/json"}));
+      if (response.statusCode == 200) {
+        await SPHelper.spHelper.setToken(response.data['data']['token']);//save token in shared preferences
+        await SPHelper.spHelper.setUserType(response.data['data']['patient']['type']);//save userType in shared preferences
+
+        authController.getLoginModelData.value =
+            LoginModel.fromJson(response.data);
+        print(" LoginModel Successfull Stored${response.data}");
+        print(SPHelper.spHelper.getToken());
+
+        ProgressDialogUtils.hide();
+
+        myGet.Get.offAllNamed(rootRoute);
+        Helper.getSheetSucsses(response.data['message']);
+      } else {
+        ProgressDialogUtils.hide();
+      }
+    } on DioError catch (err) {
+      ProgressDialogUtils.hide();
+      Helper.getSheetError(err.response.data['message']);
+      print(err);
+    }
+  }
+
+  loginAdmin({String type, String email, String password}) async {
+    try {
+      initDio();
+      ProgressDialogUtils.show();
+
+      FormData data = FormData.fromMap({
+        'type': type,
+        'email': email,
+        'password': password,
+      });
+      Response response = await dio.post(baseUrl + loginURL,
+          data: data,
+          options: Options(headers: {"Accept": "application/json"}));
+      if (response.statusCode == 200) {
+        await SPHelper.spHelper.setToken(response.data['data']['token']);//save token in shared preferences
+        await SPHelper.spHelper.setUserType(response.data['data']['user']['type']);//save userType in shared preferences
+
+        authController.getLoginModelData.value =
+            LoginModel.fromJson(response.data);
+        print("Admin LoginModel Successfull Stored${response.data}");
         print(SPHelper.spHelper.getToken());
 
         ProgressDialogUtils.hide();
@@ -126,33 +200,86 @@ class AuthApis {
       Helper.getSheetError(err.response.data['data']);
     }
   }
+  registerPatient(
+      {String type,
+      String name,
+      String id_number,
+      String password,
+      String password_confirmation,
+      String gender}) async {
+    try {
+      initDio();
+      ProgressDialogUtils.show();
+      FormData data = FormData.fromMap(
+        {
+          "type": type,
+          "name": name,
+          "id_number": id_number,
+          "password": password,
+          "password_confirmation": password_confirmation,
+          "gender": gender,
+        },
+      );
+      // log(data.toString());
+      Response response = await dio.post(
+        baseUrl + registerURL,
+        options: Options(headers: {"Accept": "application/json"}),
+        data: data,
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        authController.getRegisterModelData.value =
+            RegisterModel.fromJson(response.data);
+        print(" Pationt RegisterModel Successfull Stored${response.data}");
+        ProgressDialogUtils.hide();
+        myGet.Get.offAllNamed(authenticationPageRoute);
+        Helper.getSheetSucsses("تم تسجيل الاشتراك بنجاح");
+      } else {
+        print(response.statusCode);
+        // ProgressDialogUtils.hide();
+        // Helper.getSheetError(response.data['data']);
+      }
+    } on DioError catch (err) {
+      err.response;
+      ProgressDialogUtils.hide();
+      print(err);
 
-// logOut() async {
-//   try {
-//     initDio();
-//     ProgressDialogUtils.show();
-//     String token = SPHelper.spHelper.getToken();
-//
-//     Response response = await dio.post(
-//       baseUrl + logoutUrl,
-//       options: Options(
-//         headers: {
-//           'auth-token': token,
-//         },
-//       ),
-//     );
-//
-//     if (response.data['status']) {
-//       ProgressDialogUtils.hide();
-//       myGet.Get.offAll(() => LoginScreen());
-//       SPHelper.spHelper.setToken("");
-//       Helper.getSheetSucsses(response.data['msg']);
-//     } else {
-//       ProgressDialogUtils.hide();
-//     }
-//   } catch (err) {
-//     ProgressDialogUtils.hide();
-//   }
-// }
+      Helper.getSheetError(err.response.data['data']);
+    }
+  }
+
+
+  logout() async {
+    String token = SPHelper.spHelper.getToken();
+    try {
+      initDio();
+      ProgressDialogUtils.show();
+      Response response = await dio.post(
+        baseUrl + logoutURL,
+        options: Options(headers: {"Accept": "application/json",'Authorization':'Bearer $token'}),
+
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print(" Logout Successfful ${response.data}");
+        SPHelper.spHelper.removeToken();
+        ProgressDialogUtils.hide();
+        myGet.Get.offAllNamed(authenticationPageRoute);
+        Helper.getSheetSucsses(response.data['message']);
+      } else {
+        print(response.statusCode);
+        ProgressDialogUtils.hide();
+        Helper.getSheetError('هناك خطأ ما');
+      }
+    } on DioError catch (err) {
+      err.response;
+      ProgressDialogUtils.hide();
+      print(err);
+
+      Helper.getSheetError('هناك خطأ');
+    }
+  }
+
+
 
 }

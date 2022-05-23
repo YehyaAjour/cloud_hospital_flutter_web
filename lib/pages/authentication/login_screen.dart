@@ -10,7 +10,6 @@ import '../../widgets/action_button.dart';
 import '../../widgets/custom_image.dart';
 import '../../widgets/custom_text.dart';
 
-
 class LoginScreen extends StatefulWidget {
   final GlobalKey<FormState> formStateLogin;
   final Function onSignUpSelected;
@@ -26,9 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
 
     return GetBuilder<AuthController>(
       init: AuthController(),
@@ -36,8 +33,11 @@ class _LoginScreenState extends State<LoginScreen> {
         return Form(
           key: widget.formStateLogin,
           child: Padding(
-            padding: EdgeInsets.all(
-                size.height > 770 ? 64 : size.height > 670 ? 32 : 16),
+            padding: EdgeInsets.all(size.height > 770
+                ? 64
+                : size.height > 670
+                    ? 32
+                    : 16),
             child: Center(
               child: Card(
                 elevation: 4,
@@ -49,7 +49,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   height: size.height *
-                      (size.height > 770 ? 0.7 : size.height > 670 ? 0.8 : 0.9),
+                      (size.height > 770
+                          ? 0.7
+                          : size.height > 670
+                              ? 0.8
+                              : 0.9),
                   width: 500,
                   color: Colors.white,
                   child: Center(
@@ -59,7 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-
                             Text(
                               "تسجيل الدخول",
                               style: TextStyle(
@@ -67,11 +70,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: Colors.grey[700],
                               ),
                             ),
-
                             const SizedBox(
                               height: 8,
                             ),
-
                             const SizedBox(
                               width: 30,
                               child: Divider(
@@ -79,18 +80,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                 thickness: 2,
                               ),
                             ),
-
                             const SizedBox(
                               height: 32,
                             ),
-                            CustomTextFormField(
-                              suffixIcon: Icons.mail_outline,
-                              hint: 'البريد الإلكتروني',
-                              onSaved: authController.setEmail,
-                              validator: authController.validationEmail,
-                            ),
-
-
+                            controller.accountType == 'patient'
+                                ? CustomTextFormField(
+                                    suffixIcon: Icons.mail_outline,
+                                    hint: 'رقم الهوية',
+                                    onSaved: authController.setIdNumber,
+                                    validator: authController.validationIdNumber,
+                                  )
+                                : CustomTextFormField(
+                                    suffixIcon: Icons.mail_outline,
+                                    hint: 'البريد الإلكتروني',
+                                    onSaved: authController.setEmail,
+                                    validator: authController.validationEmail,
+                                  ),
                             const SizedBox(
                               height: 32,
                             ),
@@ -100,8 +105,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               onSaved: authController.setPassword,
                               validator: authController.validationPassword,
                             ),
-
-
                             const SizedBox(
                               height: 64,
                             ),
@@ -114,23 +117,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                       controller.setAccountType('Doctor');
                                     },
                                     child: Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 4),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 4),
                                       height: 91,
                                       width: 108,
                                       decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.circular(22),
+                                        borderRadius: BorderRadius.circular(22),
                                         border: Border.all(
                                             width: 3,
                                             color: controller.accountType ==
-                                                'Doctor'
+                                                    'Doctor'
                                                 ? primaryColor
                                                 : Colors.grey),
                                       ),
                                       child: Column(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           CustomSvgImage(
                                             imageName: 'doctor',
@@ -142,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             text: 'طبيب',
                                             size: 13,
                                             color: controller.accountType ==
-                                                'Doctor'
+                                                    'Doctor'
                                                 ? primaryColor
                                                 : Colors.grey,
                                           )
@@ -158,29 +160,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                       controller.setAccountType('patient');
                                     },
                                     child: Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 4),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 4),
                                       height: 91,
                                       width: 108,
                                       decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.circular(22),
+                                        borderRadius: BorderRadius.circular(22),
                                         border: Border.all(
                                           width: 3,
                                           color: controller.accountType ==
-                                              'patient'
+                                                  'patient'
                                               ? primaryColor
                                               : Colors.grey,
                                         ),
                                       ),
                                       child: Column(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           CustomSvgImage(
                                             imageName: 'Patient',
                                             color: controller.accountType ==
-                                                'patient'
+                                                    'patient'
                                                 ? null
                                                 : Colors.grey,
                                           ),
@@ -191,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             text: 'مريض',
                                             size: 13,
                                             color: controller.accountType ==
-                                                'patient'
+                                                    'patient'
                                                 ? primaryColor
                                                 : Colors.grey,
                                           )
@@ -207,29 +208,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                       controller.setAccountType('admin');
                                     },
                                     child: Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 4),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 4),
                                       height: 91,
                                       width: 108,
                                       decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.circular(22),
+                                        borderRadius: BorderRadius.circular(22),
                                         border: Border.all(
                                           width: 3,
-                                          color: controller.accountType ==
-                                              'admin'
-                                              ? primaryColor
-                                              : Colors.grey,
+                                          color:
+                                              controller.accountType == 'admin'
+                                                  ? primaryColor
+                                                  : Colors.grey,
                                         ),
                                       ),
                                       child: Column(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           CustomSvgImage(
                                             imageName: 'admin',
                                             color: controller.accountType ==
-                                                'admin'
+                                                    'admin'
                                                 ? null
                                                 : Colors.grey,
                                           ),
@@ -240,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             text: 'ادمن',
                                             size: 13,
                                             color: controller.accountType ==
-                                                'admin'
+                                                    'admin'
                                                 ? primaryColor
                                                 : Colors.grey,
                                           )
@@ -259,23 +259,31 @@ class _LoginScreenState extends State<LoginScreen> {
                                   .validate()) {
                                 widget.formStateLogin.currentState.save();
                                 if (controller.accountType == 'Doctor') {
-                                  AuthApis.authApis.login(
-                                      type:'doctor',
+                                  AuthApis.authApis.loginDoctor(
+                                      type: 'doctor',
                                       email: authController.email,
                                       password: authController.password);
                                 }
-
+                                else if (controller.accountType == 'patient') {
+                                  AuthApis.authApis.loginPatient(
+                                      type: 'patient',
+                                      idNumber: authController.idNumber,
+                                      password: authController.password);
+                                }
+                                else if (controller.accountType == 'admin') {
+                                  AuthApis.authApis.loginAdmin(
+                                      type: 'admin',
+                                      email: authController.email,
+                                      password: authController.password);
+                                }
                               }
                             }),
-
                             const SizedBox(
                               height: 32,
                             ),
-
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-
                                 const Text(
                                   "لا يوجد لديك حساب?",
                                   style: TextStyle(
@@ -283,18 +291,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontSize: 14,
                                   ),
                                 ),
-
                                 const SizedBox(
                                   width: 8,
                                 ),
-
                                 GestureDetector(
                                   onTap: () {
                                     widget.onSignUpSelected();
                                   },
                                   child: Row(
-                                    children: const[
-
+                                    children: const [
                                       Text(
                                         "سجل الأن",
                                         style: TextStyle(
@@ -303,23 +308,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-
                                       SizedBox(
                                         width: 8,
                                       ),
-
                                       Icon(
                                         Icons.arrow_forward,
                                         color: primaryColor,
                                       ),
-
                                     ],
                                   ),
                                 ),
-
                               ],
                             ),
-
                           ],
                         ),
                       ),
@@ -331,7 +331,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       },
-
     );
   }
 }

@@ -7,5 +7,6 @@ String baseImageUrl = 'http://memeals.herokuapp.com/uploads/';
 String departmentURL = 'Specialities';
 String registerURL = 'register';
 String loginURL = 'login';
+String logoutURL = 'logout';
 
 

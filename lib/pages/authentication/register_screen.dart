@@ -28,6 +28,8 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   AuthController authController = Get.find();
   String _dropDownValue;
+  String _genderDropDownValue;
+  List<String>genderList = ['Male','Female'];
   Data dataM = Data();
 
   @override
@@ -99,12 +101,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             const SizedBox(
                               height: 32,
                             ),
-                            CustomTextFormField(
-                              suffixIcon: Icons.mail_outline,
-                              hint: 'البريد الإلكتروني',
-                              onSaved: authController.setEmailR,
-                              validator: authController.validationEmailR,
-                            ),
+                            controller.accountType == 'patient'
+                                ? CustomTextFormField(
+                                    suffixIcon: Icons.document_scanner,
+                                    hint: 'رقم الهوية',
+                                    onSaved: authController.setIdNumberR,
+                                    validator: authController.validationIdNumR,
+                                  )
+                                : CustomTextFormField(
+                                    suffixIcon: Icons.mail_outline,
+                                    hint: 'البريد الإلكتروني',
+                                    onSaved: authController.setEmailR,
+                                    validator: authController.validationEmailR,
+                                  ),
                             const SizedBox(
                               height: 32,
                             ),
@@ -117,121 +126,65 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             const SizedBox(
                               height: 32,
                             ),
-                            controller.accountType == 'patient'
-                                ? Column(
-                                    children: [
-                                      CustomText(text: 'إرفاق وثيقة', size: 15),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          var image = await ImagePicker()
-                                              .getImage(
-                                                  source: ImageSource.gallery);
-                                          controller.setImage(image);
-                                        },
-                                        child: controller.image == null
-                                            ? Container(
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: borderColor),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                                width: 300,
-                                                height: 100,
-                                                child: Center(
-                                                    child: Icon(Icons.image)),
-                                              )
-                                            : Container(
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: borderColor),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                                child: Image.network(
-                                                    controller.image.path),
-                                                width: 300,
-                                                height: 100,
-                                              ),
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                    ],
-                                  )
-                                : const SizedBox(),
+                            CustomTextFormField(
+                              suffixIcon: Icons.lock_outline,
+                              hint: 'تأكيد كلمة السر',
+                              onSaved: authController.setConfirmPassword,
+                              validator:
+                                  authController.validationConfirmPassword,
+                            ),
+                            // controller.accountType == 'patient'
+                            //     ? Column(
+                            //         children: [
+                            //           CustomText(text: 'إرفاق وثيقة', size: 15),
+                            //           const SizedBox(
+                            //             height: 10,
+                            //           ),
+                            //           GestureDetector(
+                            //             onTap: () async {
+                            //               var image = await ImagePicker()
+                            //                   .getImage(
+                            //                       source: ImageSource.gallery);
+                            //               controller.setImage(image);
+                            //             },
+                            //             child: controller.image == null
+                            //                 ? Container(
+                            //                     decoration: BoxDecoration(
+                            //                       border: Border.all(
+                            //                           color: borderColor),
+                            //                       borderRadius:
+                            //                           BorderRadius.circular(8),
+                            //                     ),
+                            //                     width: 300,
+                            //                     height: 100,
+                            //                     child: Center(
+                            //                         child: Icon(Icons.image)),
+                            //                   )
+                            //                 : Container(
+                            //                     decoration: BoxDecoration(
+                            //                       border: Border.all(
+                            //                           color: borderColor),
+                            //                       borderRadius:
+                            //                           BorderRadius.circular(8),
+                            //                     ),
+                            //                     child: Image.network(
+                            //                         controller.image.path),
+                            //                     width: 300,
+                            //                     height: 100,
+                            //                   ),
+                            //           ),
+                            //           const SizedBox(
+                            //             height: 15,
+                            //           ),
+                            //         ],
+                            //       )
+                            //     : const SizedBox(),
+                            const SizedBox(
+                              height: 32,
+                            ),
                             controller.accountType == 'Doctor'
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const CustomText(
-                                        text: 'التخصص',
-                                      ),
-                                      SizedBox(height: 5),
-                                      Container(
-                                        height: 60,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            border:
-                                                Border.all(color: borderColor)),
-                                        child: DropdownButtonHideUnderline(
-                                          child: DropdownButton(
-                                            hint: _dropDownValue == null
-                                                ? Text('')
-                                                : Padding(
-                                                    padding: EdgeInsets.only(
-                                                        right: 10),
-                                                    child: CustomText(
-                                                      text: dataM.name,
-                                                      size: 16,
-                                                      weight: FontWeight.w300,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                            isExpanded: true,
-                                            iconSize: 30.0,
-                                            style: TextStyle(
-                                                fontFamily: "din",
-                                                color: Colors.black),
-                                            items: authController
-                                                .getDepartmentDoctorModelData
-                                                .value
-                                                .data
-                                                .map(
-                                              (val) {
-                                                return DropdownMenuItem<String>(
-                                                  value: val.id.toString(),
-                                                  child: Text(val.name),
-                                                );
-                                              },
-                                            ).toList(),
-                                            onChanged: (val) {
-                                              setState(
-                                                () {
-                                                  _dropDownValue = val;
-                                                  dataM = authController
-                                                      .getDepartmentDoctorModelData
-                                                      .value
-                                                      .data
-                                                      .firstWhere((element) =>
-                                                          element.id
-                                                              .toString() ==
-                                                          val);
-                                                  log(dataM.name.toString());
-                                                },
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : const SizedBox(),
+                                ? selectSpecDropDown()
+                                : selectGenderDropDown(gender: genderList),
                             const SizedBox(
                               height: 30,
                             ),
@@ -328,54 +281,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   ),
                                 ),
-                                Expanded(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      controller.setAccountType('admin');
-                                    },
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 4),
-                                      height: 91,
-                                      width: 108,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(22),
-                                        border: Border.all(
-                                          width: 3,
-                                          color:
-                                              controller.accountType == 'admin'
-                                                  ? primaryColor
-                                                  : Colors.grey,
-                                        ),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          CustomSvgImage(
-                                            imageName: 'admin',
-                                            color: controller.accountType ==
-                                                    'admin'
-                                                ? null
-                                                : Colors.grey,
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          CustomText(
-                                            text: 'ادمن',
-                                            size: 13,
-                                            color: controller.accountType ==
-                                                    'admin'
-                                                ? primaryColor
-                                                : Colors.grey,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
+
                               ],
                             ),
                             const SizedBox(
@@ -391,7 +297,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       email: authController.emailR,
                                       name: authController.nameR,
                                       password: authController.passwordR,
-                                      speciality_id:_dropDownValue);
+                                      speciality_id: _dropDownValue);
+                                }else if (controller.accountType == 'patient') {
+                                  AuthApis.authApis.registerPatient(
+                                      type: 'patient',
+                                      id_number: authController.idNumberR,
+                                      name: authController.nameR,
+                                      password: authController.passwordR,
+                                      password_confirmation: authController.confirmPassword,
+                                      gender: _dropDownValue=='Male'? 'male':'female');
                                 }
                               }
                             }),
@@ -448,6 +362,132 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         );
       },
+    );
+  }
+  Widget selectGenderDropDown({List<String> gender}) {
+    return Column(
+      crossAxisAlignment:
+      CrossAxisAlignment.start,
+      children: [
+        const CustomText(
+          text: 'Gender',
+        ),
+        SizedBox(height: 5),
+        Container(
+          height: 60,
+          decoration: BoxDecoration(
+              borderRadius:
+              BorderRadius.circular(8),
+              border:
+              Border.all(color: borderColor)),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton(
+              hint: _genderDropDownValue == null
+                  ? Text('')
+                  : Padding(
+                padding: EdgeInsets.only(
+                    right: 10),
+                child: CustomText(
+                  text: _genderDropDownValue,
+                  size: 16,
+                  weight: FontWeight.w300,
+                  color: Colors.black,
+                ),
+              ),
+              isExpanded: true,
+              iconSize: 30.0,
+              style: TextStyle(
+                  fontFamily: "din",
+                  color: Colors.black),
+              items: gender
+                  .map(
+                    (val) {
+                  return DropdownMenuItem<String>(
+                    value: val,
+                    child: Text(val),
+                  );
+                },
+              ).toList(),
+              onChanged: (val) {
+                setState(
+                      () {
+                    _genderDropDownValue = val;
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  Widget selectSpecDropDown() {
+    return Column(
+      crossAxisAlignment:
+      CrossAxisAlignment.start,
+      children: [
+        const CustomText(
+          text: 'التخصص',
+        ),
+        SizedBox(height: 5),
+        Container(
+          height: 60,
+          decoration: BoxDecoration(
+              borderRadius:
+              BorderRadius.circular(8),
+              border:
+              Border.all(color: borderColor)),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton(
+              hint: _dropDownValue == null
+                  ? Text('')
+                  : Padding(
+                padding: EdgeInsets.only(
+                    right: 10),
+                child: CustomText(
+                  text: dataM.name,
+                  size: 16,
+                  weight: FontWeight.w300,
+                  color: Colors.black,
+                ),
+              ),
+              isExpanded: true,
+              iconSize: 30.0,
+              style: TextStyle(
+                  fontFamily: "din",
+                  color: Colors.black),
+              items: authController
+                  .getDepartmentDoctorModelData
+                  .value
+                  .data
+                  .map(
+                    (val) {
+                  return DropdownMenuItem<String>(
+                    value: val.id.toString(),
+                    child: Text(val.name),
+                  );
+                },
+              ).toList(),
+              onChanged: (val) {
+                setState(
+                      () {
+                    _dropDownValue = val;
+                    dataM = authController
+                        .getDepartmentDoctorModelData
+                        .value
+                        .data
+                        .firstWhere((element) =>
+                    element.id
+                        .toString() ==
+                        val);
+                    log(dataM.name.toString());
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

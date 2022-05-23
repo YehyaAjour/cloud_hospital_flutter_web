@@ -1,3 +1,4 @@
+import 'package:cloud_hospital/apis/auth_apis.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -67,9 +68,9 @@ class SideMenu extends StatelessWidget {
                               navigationController.navigateTo(item.route);
                             }
                             if(item.route == logoutPageRoute){
+                              AuthApis.authApis.logout();
                               menuController.changeActiveItemTo(overviewPageDisplayName);
-                              SPHelper.spHelper.removeToken();
-                               Get.offAllNamed(authenticationPageRoute);
+
 
 
                             }
