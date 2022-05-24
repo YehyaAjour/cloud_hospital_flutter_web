@@ -13,7 +13,6 @@ import '../model/department_doctor_model.dart';
 import '../model/register_model.dart';
 
 class AuthController extends GetxController {
-  Rx<DepartmentDoctorModel> getDepartmentDoctorModelData = DepartmentDoctorModel().obs;
   Rx<RegisterModel> getRegisterModelData = RegisterModel().obs;
   Rx<LoginModel> getLoginModelData = LoginModel().obs;
 
@@ -26,10 +25,8 @@ class AuthController extends GetxController {
   }
   //============Login=============
   String email,idNumber, password;
-  File profilePicture;
 
-  // var image = File('').obs;
-  ImagePicker picker = ImagePicker();
+
 
   setEmail(String value) => this.email = value;
   setIdNumber(String value) => this.idNumber = value;
@@ -55,11 +52,9 @@ class AuthController extends GetxController {
 
 
   //============Register=============
-  String phone, emailR, nameR, idNumberR , passwordR, confirmPassword;
+  String  emailR, nameR, idNumberR , passwordR, confirmPassword;
 
-  setPhone(String value) {
-    this.phone = value;
-  }
+
 
   setEmailR(String value) {
     this.emailR = value;
@@ -77,15 +72,11 @@ class AuthController extends GetxController {
     this.passwordR = value;
   }
 
-  setConfirmPassword(String value) {
+  setConfirmPasswordR(String value) {
     this.confirmPassword = value;
   }
 
-  validationPhoneNumberR(String value) {
-    if (GetUtils.isNull(value) || value.isEmpty) {
-      return "الرجاء ادخال رقم الهاتف";
-    }
-  }
+
 
   validationEmailR(String value) {
     if (GetUtils.isNull(value) || value.isEmpty) {
@@ -116,18 +107,13 @@ class AuthController extends GetxController {
     }
   }
 
-  validationConfirmPassword(String value) {
+  validationConfirmPasswordR(String value) {
     if (GetUtils.isNull(value) || value.isEmpty) {
       return "الرجاء ادخال تأكيد كلمة المرور";
     }
-    // if (value != this.passwordR) {
-    //   return 'كلمتان المرور غير متطابقتان';
-    // }
+    if (value != this.passwordR) {
+      return "كلمة المرور غير متطابقة";
+    }
   }
 
- var image ;
-  Future setImage(img)async{
-    this.image=img;
-    update();
-  }
 }

@@ -16,6 +16,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool isPassword;
   final int maxLines;
   final IconData suffixIcon;
+  final TextEditingController controller;
   CustomTextFormField({
     this.label,
     this.hint,
@@ -24,11 +25,13 @@ class CustomTextFormField extends StatelessWidget {
     this.textInputType,
     this.isPassword = false,
     this.maxLines,
-    this.suffixIcon
+    this.suffixIcon,
+    this.controller
   });
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       onSaved: (value) => onSaved(value),
       validator: (newValue) => validator(newValue),
       obscureText: isPassword,

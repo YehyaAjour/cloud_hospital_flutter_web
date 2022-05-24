@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_hospital/constants/style.dart';
+import 'package:cloud_hospital/controllers/dashboard_controller.dart';
 import 'package:cloud_hospital/routing/routes.dart';
 import 'package:cloud_hospital/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../apis/auth_apis.dart';
 import '../../controllers/auth_controller.dart';
 import '../../model/department_doctor_model.dart';
+import '../../utils/helper.dart';
 import '../../widgets/action_button.dart';
 import '../../widgets/custom_image.dart';
 import '../../widgets/custom_text_form_field.dart';
@@ -27,6 +29,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   AuthController authController = Get.find();
+  DashboardController dashboardController = Get.find();
   String _dropDownValue;
   String _genderDropDownValue;
   List<String>genderList = ['Male','Female'];
@@ -129,56 +132,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             CustomTextFormField(
                               suffixIcon: Icons.lock_outline,
                               hint: 'تأكيد كلمة السر',
-                              onSaved: authController.setConfirmPassword,
+                              onSaved: authController.setConfirmPasswordR,
                               validator:
-                                  authController.validationConfirmPassword,
+                                  authController.validationConfirmPasswordR,
                             ),
-                            // controller.accountType == 'patient'
-                            //     ? Column(
-                            //         children: [
-                            //           CustomText(text: 'إرفاق وثيقة', size: 15),
-                            //           const SizedBox(
-                            //             height: 10,
-                            //           ),
-                            //           GestureDetector(
-                            //             onTap: () async {
-                            //               var image = await ImagePicker()
-                            //                   .getImage(
-                            //                       source: ImageSource.gallery);
-                            //               controller.setImage(image);
-                            //             },
-                            //             child: controller.image == null
-                            //                 ? Container(
-                            //                     decoration: BoxDecoration(
-                            //                       border: Border.all(
-                            //                           color: borderColor),
-                            //                       borderRadius:
-                            //                           BorderRadius.circular(8),
-                            //                     ),
-                            //                     width: 300,
-                            //                     height: 100,
-                            //                     child: Center(
-                            //                         child: Icon(Icons.image)),
-                            //                   )
-                            //                 : Container(
-                            //                     decoration: BoxDecoration(
-                            //                       border: Border.all(
-                            //                           color: borderColor),
-                            //                       borderRadius:
-                            //                           BorderRadius.circular(8),
-                            //                     ),
-                            //                     child: Image.network(
-                            //                         controller.image.path),
-                            //                     width: 300,
-                            //                     height: 100,
-                            //                   ),
-                            //           ),
-                            //           const SizedBox(
-                            //             height: 15,
-                            //           ),
-                            //         ],
-                            //       )
-                            //     : const SizedBox(),
                             const SizedBox(
                               height: 32,
                             ),
@@ -288,24 +245,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               height: 64,
                             ),
                             actionButton("التسجيل", () {
+                              widget.formStateRegister.currentState.save();
                               if (widget.formStateRegister.currentState
                                   .validate()) {
-                                widget.formStateRegister.currentState.save();
+
                                 if (controller.accountType == 'Doctor') {
-                                  AuthApis.authApis.registerDoctor(
+                                  if(_dropDownValue!=null){
+                                    AuthApis.authApis.registerDoctor(
                                       type: 'doctor',
                                       email: authController.emailR,
                                       name: authController.nameR,
                                       password: authController.passwordR,
-                                      speciality_id: _dropDownValue);
+                                      speciality_id: _dropDownValue);}else{
+                                    Helper.getSheetError('الرجاء ادخال التخصص');
+                                  }
+
                                 }else if (controller.accountType == 'patient') {
-                                  AuthApis.authApis.registerPatient(
-                                      type: 'patient',
-                                      id_number: authController.idNumberR,
-                                      name: authController.nameR,
-                                      password: authController.passwordR,
-                                      password_confirmation: authController.confirmPassword,
-                                      gender: _dropDownValue=='Male'? 'male':'female');
+                                  if(_genderDropDownValue!=null){
+                                    AuthApis.authApis.registerPatient(
+                                        type: 'patient',
+                                        id_number: authController.idNumberR,
+                                        name: authController.nameR,
+                                        password: authController.passwordR,
+                                        password_confirmation:
+                                            authController.confirmPassword,
+                                        gender: _genderDropDownValue == 'Male'
+                                            ? 'male'
+                                            : 'female');
+                                  }else{
+                                    Helper.getSheetError('please enter Gender');
+                                  }
+
                                 }
                               }
                             }),
@@ -456,7 +426,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               style: TextStyle(
                   fontFamily: "din",
                   color: Colors.black),
-              items: authController
+              items: dashboardController
                   .getDepartmentDoctorModelData
                   .value
                   .data
@@ -472,7 +442,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 setState(
                       () {
                     _dropDownValue = val;
-                    dataM = authController
+                    dataM = dashboardController
                         .getDepartmentDoctorModelData
                         .value
                         .data

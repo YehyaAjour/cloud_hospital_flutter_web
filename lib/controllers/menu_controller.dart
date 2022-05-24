@@ -33,6 +33,8 @@ class MenuController extends GetxController {
         return _customIcon('Patient', itemName);
       case authenticationPageDisplayName:
         return _customIcon('logout', itemName);
+      case specialtiesDisplayName:
+        return _customIcon('statistics', itemName);
       default:
         return _customIcon('logout', itemName);
     }

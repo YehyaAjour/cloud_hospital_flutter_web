@@ -1,3 +1,6 @@
+import 'package:cloud_hospital/apis/auth_apis.dart';
+import 'package:cloud_hospital/apis/dashboard_apis.dart';
+import 'package:cloud_hospital/controllers/dashboard_controller.dart';
 import 'package:cloud_hospital/services/sp_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -24,6 +27,7 @@ Future<void> main() async {
   Get.put(MenuController());
   Get.put(NavigationController());
   Get.put(AuthController());
+  Get.put(DashboardController());
   runApp(MyApp());
   configLoading();
 }
@@ -40,7 +44,17 @@ void configLoading() {
     ..dismissOnTap = false;
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    DashboardApis.dashboardApis.getDepartment();
+    super.initState();
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

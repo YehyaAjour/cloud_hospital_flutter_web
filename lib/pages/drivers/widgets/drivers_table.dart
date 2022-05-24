@@ -1,11 +1,16 @@
+import 'package:cloud_hospital/controllers/dashboard_controller.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../constants/style.dart';
+import '../../../utils/progress_dialog_utils.dart';
 import '../../../widgets/custom_text.dart';
 
 /// Example without datasource
 class DriversTable extends StatelessWidget {
+  DashboardController dashController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,46 +27,33 @@ class DriversTable extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(16),
       margin: EdgeInsets.only(bottom: 30),
-      child:   DataTable2(
+      child: Obx(() => dashController.getAllDoctorModelData.value.data == null
+          ? ProgressDialogUtils.show()
+          : DataTable2(
               columnSpacing: 12,
               horizontalMargin: 12,
               minWidth: 600,
               columns: [
                 DataColumn2(
-                  label: Text("Name"),
+                  label: Text("الإسم"),
                   size: ColumnSize.L,
                 ),
                 DataColumn(
-                  label: Text('Location'),
+                  label: Text('البريد الإلكتروني'),
                 ),
                 DataColumn(
-                  label: Text('Rating'),
+                  label: Text('التخصص'),
                 ),
                 DataColumn(
                   label: Text('Action'),
                 ),
               ],
               rows: List<DataRow>.generate(
-                  15,
+                  dashController.getAllDoctorModelData.value.data.doctors.length,
                   (index) => DataRow(cells: [
-                        DataCell(CustomText(text: "الدكتور يحيى")),
-                        DataCell(CustomText(text: "غزة")),
-                        DataCell(Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.deepOrange,
-                              size: 18,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            CustomText(
-                              text: "4.5",
-                            )
-                          ],
-                        )),
+                        DataCell(CustomText(text: dashController.getAllDoctorModelData.value.data.doctors[index].name)),
+                        DataCell(CustomText(text: dashController.getAllDoctorModelData.value.data.doctors[index].email)),
+                        DataCell(CustomText(text: dashController.getAllDoctorModelData.value.data.doctors[index].speciality)),
                         DataCell(Container(
                             decoration: BoxDecoration(
                               color: light,
@@ -75,7 +67,7 @@ class DriversTable extends StatelessWidget {
                               color: active.withOpacity(.7),
                               weight: FontWeight.bold,
                             ))),
-                      ]))),
+                      ])))),
     );
   }
 }

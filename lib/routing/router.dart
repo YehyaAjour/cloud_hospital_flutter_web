@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../pages/clients/clients.dart';
 import '../pages/drivers/drivers.dart';
 import '../pages/overview/overview.dart';
+import '../pages/specialties/specialties.dart';
 import 'routes.dart';
 
 
@@ -14,6 +15,8 @@ Route<dynamic> generateRoute(RouteSettings settings){
       return _getPageRoute(DriversPage());
     case clientsPageRoute:
       return _getPageRoute(ClientsPage());
+    case specialtiesPageRoute:
+      return _getPageRoute(Specialties());
     default:
       return _getPageRoute(OverviewPage());
 

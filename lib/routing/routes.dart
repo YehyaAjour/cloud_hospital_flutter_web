@@ -9,6 +9,9 @@ const driversPageRoute = "/drivers";
 const clientsPageDisplayName = "المرضى";
 const clientsPageRoute = "/clients";
 
+const specialtiesDisplayName = "التخصصات";
+const specialtiesPageRoute = "/specialties";
+
 const authenticationPageDisplayName = "تسجيل خروج";
 const authenticationPageRoute = "/auth";
 const loginPageRoute = "/login";
@@ -28,5 +31,6 @@ List<MenuItem> sideMenuItemRoutes = [
  MenuItem(overviewPageDisplayName, overviewPageRoute),
  MenuItem(driversPageDisplayName, driversPageRoute),
  MenuItem(clientsPageDisplayName, clientsPageRoute),
+ MenuItem(specialtiesDisplayName, specialtiesPageRoute),
  MenuItem(authenticationPageDisplayName, logoutPageRoute),
 ];

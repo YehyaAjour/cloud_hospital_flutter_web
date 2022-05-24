@@ -9,4 +9,8 @@ String registerURL = 'register';
 String loginURL = 'login';
 String logoutURL = 'logout';
 
+//=================== DashboardURL =======================
+String allDoctorURL = 'doctors';
+String addSpecialitiesURL = 'Specialities';
+
 

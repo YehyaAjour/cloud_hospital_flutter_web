@@ -1,3 +1,4 @@
+import 'package:cloud_hospital/apis/dashboard_apis.dart';
 import 'package:flutter/material.dart';
 
 
@@ -8,8 +9,19 @@ import 'widgets/side_menu.dart';
 import 'widgets/top_nav.dart';
 
 
-class SiteLayout extends StatelessWidget {
+class SiteLayout extends StatefulWidget {
+  @override
+  State<SiteLayout> createState() => _SiteLayoutState();
+}
+
+class _SiteLayoutState extends State<SiteLayout> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  @override
+  void initState() {
+    DashboardApis.dashboardApis.getAllDoctor();
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

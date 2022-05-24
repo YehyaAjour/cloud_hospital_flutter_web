@@ -1,4 +1,5 @@
 import 'package:cloud_hospital/apis/auth_apis.dart';
+import 'package:cloud_hospital/apis/dashboard_apis.dart';
 import 'package:cloud_hospital/pages/authentication/login_screen.dart';
 import 'package:cloud_hospital/pages/authentication/register_screen.dart';
 import 'package:cloud_hospital/widgets/custom_image.dart';
@@ -18,7 +19,8 @@ class _AuthPageState extends State<AuthPage> {
   Option selectedOption = Option.LogIn;
 @override
   void initState() {
-      AuthApis.authApis.getDepartment();
+      DashboardApis.dashboardApis.getDepartment();
+
     super.initState();
   }
   @override

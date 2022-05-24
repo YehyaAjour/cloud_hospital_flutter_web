@@ -139,21 +139,7 @@ class AuthApis {
     }
   }
 
-  getDepartment() async {
-    try {
-      initDio();
-      Response response = await dio.get(
-        baseUrl + departmentURL,
-      );
-      if (response.statusCode == 200) {
-        authController.getDepartmentDoctorModelData.value =
-            DepartmentDoctorModel.fromJson(response.data);
-        print(" DepartmentDoctorModel ${response.data}");
-      } else {}
-    } catch (err) {
-      print("DepartmentDoctorModel  $err");
-    }
-  }
+
 
   registerDoctor(
       {String type,
