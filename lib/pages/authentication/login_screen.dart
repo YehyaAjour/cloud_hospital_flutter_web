@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 
 import '../../apis/auth_apis.dart';
 import '../../controllers/auth_controller.dart';
-import '../../routing/routes.dart';
 import '../../widgets/action_button.dart';
 import '../../widgets/custom_image.dart';
 import '../../widgets/custom_text.dart';

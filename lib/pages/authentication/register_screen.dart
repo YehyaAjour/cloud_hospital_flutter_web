@@ -1,13 +1,9 @@
 import 'dart:developer';
-
 import 'package:cloud_hospital/constants/style.dart';
 import 'package:cloud_hospital/controllers/dashboard_controller.dart';
-import 'package:cloud_hospital/routing/routes.dart';
 import 'package:cloud_hospital/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-
 import '../../apis/auth_apis.dart';
 import '../../controllers/auth_controller.dart';
 import '../../model/department_doctor_model.dart';

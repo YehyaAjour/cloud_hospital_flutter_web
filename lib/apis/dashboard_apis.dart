@@ -1,20 +1,15 @@
 
 
-import 'dart:io';
 
-import 'package:cloud_hospital/apis/auth_apis.dart';
 import 'package:cloud_hospital/model/all_pation_model.dart';
-import 'package:cloud_hospital/model/login_model.dart';
-import 'package:cloud_hospital/model/register_model.dart';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as myGet;
 import 'package:image_picker/image_picker.dart';
 
-import '../controllers/auth_controller.dart';
 import '../controllers/dashboard_controller.dart';
 import '../model/all_doctor_model.dart';
 import '../model/department_doctor_model.dart';
-import '../routing/routes.dart';
 import '../services/sp_helper.dart';
 import '../utils/constants.dart';
 import '../utils/helper.dart';

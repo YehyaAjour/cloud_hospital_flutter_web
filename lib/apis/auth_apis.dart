@@ -7,7 +7,6 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' as myGet;
 
 import '../controllers/auth_controller.dart';
-import '../model/department_doctor_model.dart';
 import '../routing/routes.dart';
 import '../services/sp_helper.dart';
 import '../utils/constants.dart';
