@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../model/all_doctor_model.dart';
 import '../model/all_pation_model.dart';
@@ -38,9 +39,25 @@ class DashboardController extends GetxController {
     }
   }
 
-  var image ;
-  Future setImage(img)async{
-    this.image=img;
+
+
+ var image;
+  setPreviewImage(image){
+    this.image =image;
     update();
   }
+  // Future<void> openGallary() async {
+  //   PickedFile picture =
+  //   await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+  //
+  //   if(picture!=null){
+  //
+  //     setState(() {
+  //       previewImage = picture.path;
+  //       pickedFile = PickedFile(picture.path);
+  //     });
+  //   }
+  //
+  //
+  // }
 }

@@ -21,14 +21,20 @@ class PationtDiseasePage extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          Obx(() => Row(
-            children: [
-              Container(
-                  margin: EdgeInsets.only(top:
-                  ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
-                  child: CustomText(text: menuController.activeItem.value, size: 24, weight: FontWeight.bold,)),
-            ],
-          ),),
+          Obx(
+            () => Row(
+              children: [
+                Container(
+                    margin: EdgeInsets.only(
+                        top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
+                    child: CustomText(
+                      text: menuController.activeItem.value,
+                      size: 24,
+                      weight: FontWeight.bold,
+                    )),
+              ],
+            ),
+          ),
           SizedBox(
             height: 20,
           ),
@@ -44,87 +50,105 @@ class PationtDiseasePage extends StatelessWidget {
                           child: AlertDialog(
                             title: Text('إضافة تخصص'),
                             content: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 CustomTextFormField(
                                   suffixIcon: Icons.mail_outline,
                                   hint: 'اسم المرض',
                                   onSaved: dashboardController.setDiseaseName,
                                   validator:
-                                  dashboardController.validationDiseaseName,
+                                      dashboardController.validationDiseaseName,
                                   // controller:spController ,
+                                ),
+                                const SizedBox(
+                                  height: 10,
                                 ),
                                 CustomTextFormField(
                                   suffixIcon: Icons.mail_outline,
                                   hint: 'تفاصيل عن المرض',
-                                  onSaved: dashboardController.setDiseaseDetails,
-                                  validator:
-                                  dashboardController.validationDiseaseDetails,
+                                  onSaved:
+                                      dashboardController.setDiseaseDetails,
+                                  validator: dashboardController
+                                      .validationDiseaseDetails,
                                   // controller:spController ,
+                                ),
+                                const SizedBox(
+                                  height: 20,
                                 ),
                                 CustomText(text: 'إرفاق وثيقة', size: 15),
                                 const SizedBox(
                                   height: 10,
                                 ),
+
                                 GetBuilder<DashboardController>(
                                   init: DashboardController(),
                                   builder: (controller) {
-                                  return GestureDetector(
-                                    onTap: () async {
-                                      var image = await ImagePicker()
-                                          .getImage(
-                                          source: ImageSource.gallery);
-                                      controller.setImage(image);
-                                    },
-                                    child: controller.image == null
-                                        ? Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: primaryColor),
-                                        borderRadius:
-                                        BorderRadius.circular(8),
-                                      ),
-                                      width: 300,
-                                      height: 100,
-                                      child: Center(
-                                          child: Icon(Icons.image)),
-                                    )
-                                        : Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: borderColor),
-                                        borderRadius:
-                                        BorderRadius.circular(8),
-                                      ),
-                                      child: Image.network(
-                                          controller.image.path),
-                                      width: 300,
-                                      height: 100,
-                                    ),
-                                  );
-                                },),
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        PickedFile picture = await ImagePicker
+                                            .platform
+                                            .pickImage(
+                                                source: ImageSource.gallery);
+                                        controller.setPreviewImage(picture);
+                                      },
+                                      child: controller.image == null
+                                          ? Container(
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: borderColor),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              width: 300,
+                                              height: 100,
+                                              child: Center(
+                                                  child: Icon(Icons.image)),
+                                            )
+                                          : Container(
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: borderColor),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Image.network(
+                                                  controller.image.path),
+                                              width: 300,
+                                              height: 100,
+                                            ),
+                                    );
+                                  },
+                                ),
                                 const SizedBox(
                                   height: 15,
-                                )
+                                ),
 
                               ],
                             ),
                             actions: [
-                              TextButton(
-                                onPressed: () {
-                                  if (_formKey.currentState.validate()) {
-                                    _formKey.currentState.save();
-                                    DashboardApis.dashboardApis.addPationtDisease(
-                                    name: dashboardController.diseaseName,
-                                    description: dashboardController.diseaseDetails,
-                                     image: dashboardController.image
-                                    );
-                                  }
+                              GetBuilder<DashboardController>(
+                                init: DashboardController(),
+                                builder: (controller){
+                                  return TextButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState.validate()) {
+                                        _formKey.currentState.save();
+                                        DashboardApis.dashboardApis
+                                            .addPationtDisease(
+                                            name: dashboardController.diseaseName,
+                                            description:
+                                            dashboardController.diseaseDetails,
+                                            image: PickedFile(controller.image.path)
+                                        );
+                                      }
+                                    },
+                                    child: const CustomText(
+                                      text: "إضافة",
+                                      color: primaryColor,
+                                      size: 16,
+                                    ),
+                                  );
                                 },
-                                child: const CustomText(
-                                  text: "إضافة",
-                                  color: primaryColor,
-                                  size: 16,
-                                ),
                               ),
                               TextButton(
                                 onPressed: () {
@@ -160,12 +184,10 @@ class PationtDiseasePage extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          Expanded(child: ListView(
-            children: [
-              PationtDiseaseTable()
-            ],
+          Expanded(
+              child: ListView(
+            children: [PationtDiseaseTable()],
           )),
-
         ],
       ),
     );

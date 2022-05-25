@@ -1,6 +1,8 @@
 
 
 
+import 'dart:io';
+
 import 'package:cloud_hospital/model/all_pation_model.dart';
 
 import 'package:dio/dio.dart';
@@ -93,7 +95,7 @@ class DashboardApis {
       FormData data = FormData.fromMap({
         'name': name,
         'description': description,
-         "file": await MultipartFile.fromFile(image.path, filename: image.path),
+         'file': await MultipartFile.fromFile(image.path, filename: image.path.split('/').last),
       });
       Response response = await dio.post(
         baseUrl + addDiseasesURL,
@@ -108,7 +110,7 @@ class DashboardApis {
         ProgressDialogUtils.hide();
         myGet.Get.back();
         Helper.getSheetSucsses(response.data['message']);
-          print(" addSpecialties Successful Stored ${response.data}");
+          print(" addSpecialties Successful Stored ${response.data.toString()}");
 
       } else {
         ProgressDialogUtils.hide();

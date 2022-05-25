@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_hospital/model/login_model.dart';
 import 'package:cloud_hospital/model/register_model.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart' as myGet;
 
 import '../controllers/auth_controller.dart';
@@ -32,6 +33,8 @@ class AuthApis {
 
   loginDoctor({String type, String email, String password}) async {
     try {
+      var token =await FirebaseMessaging.instance.getToken();
+
       initDio();
       ProgressDialogUtils.show();
 
@@ -39,6 +42,7 @@ class AuthApis {
         'type': type,
         'email': email,
         'password': password,
+        'FcmToken': token
       });
       Response response = await dio.post(baseUrl + loginURL,
           data: data,
@@ -68,6 +72,7 @@ class AuthApis {
 
   loginPatient({String type, String idNumber, String password}) async {
     try {
+      var token =await FirebaseMessaging.instance.getToken();
       initDio();
       ProgressDialogUtils.show();
 
@@ -75,6 +80,7 @@ class AuthApis {
         'type': type,
         'id_number': idNumber,
         'password': password,
+        'FcmToken': token
       });
       Response response = await dio.post(baseUrl + loginURL,
           data: data,
@@ -105,6 +111,7 @@ class AuthApis {
 
   loginAdmin({String type, String email, String password}) async {
     try {
+      var token =await FirebaseMessaging.instance.getToken();
       initDio();
       ProgressDialogUtils.show();
 
@@ -112,6 +119,7 @@ class AuthApis {
         'type': type,
         'email': email,
         'password': password,
+        'FcmToken': token
       });
       Response response = await dio.post(baseUrl + loginURL,
           data: data,

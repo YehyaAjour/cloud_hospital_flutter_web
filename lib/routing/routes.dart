@@ -17,12 +17,14 @@ const authenticationPageRoute = "/auth";
 const loginPageRoute = "/login";
 const registerPageRoute = "/register";
 const logoutPageRoute = "/logout";
+
 //----------------------PationRoute-----------------
 const PationtoverviewPageDisplayName = "نظرة عامة";
 const PationtoverviewPageRoute = "/overview";
 
 const PationtDiseasePageDisplayName = "الأمراض";
 const PationtDiseasePageRoute = "/disease";
+
 //----------------------DoctorRoute-----------------
 const DoctoroverviewPageDisplayName = "نظرة عامة";
 const DoctoroverviewPageRoute = "/overview";
