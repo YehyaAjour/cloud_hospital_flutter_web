@@ -23,7 +23,13 @@ const PationtoverviewPageRoute = "/overview";
 
 const PationtDiseasePageDisplayName = "الأمراض";
 const PationtDiseasePageRoute = "/disease";
-//----------------------PationRoute-----------------
+//----------------------DoctorRoute-----------------
+const DoctoroverviewPageDisplayName = "نظرة عامة";
+const DoctoroverviewPageRoute = "/overview";
+
+const DoctorDiseasePageDisplayName = "الأمراض";
+const DoctorDiseasePageRoute = "/Doctordisease";
+
 
 class MenuItem {
   final String name;
@@ -48,9 +54,7 @@ List<MenuItem> PationtsideMenuItemRoutes = [
 
 ];
 List<MenuItem> DoctorsideMenuItemRoutes = [
- MenuItem(overviewPageDisplayName, overviewPageRoute),
- MenuItem(driversPageDisplayName, driversPageRoute),
- MenuItem(clientsPageDisplayName, clientsPageRoute),
- MenuItem(specialtiesDisplayName, specialtiesPageRoute),
+ MenuItem(DoctoroverviewPageDisplayName, DoctoroverviewPageRoute),
+ MenuItem(DoctorDiseasePageDisplayName, DoctorDiseasePageRoute),
  MenuItem(authenticationPageDisplayName, logoutPageRoute),
 ];

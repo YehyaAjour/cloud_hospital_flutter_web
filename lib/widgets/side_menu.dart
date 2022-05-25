@@ -9,9 +9,7 @@ import '../helpers/reponsiveness.dart';
 import '../routing/routes.dart';
 import '../services/sp_helper.dart';
 import 'custom_text.dart';
-import 'side_menu_item.dart'as admin;
-import 'side_menu_item.dart'as patient;
-import 'side_menu_item.dart'as doctor;
+import 'side_menu_item.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({ Key key }) : super(key: key);
@@ -74,7 +72,7 @@ class SideMenu extends StatelessWidget {
             children: SPHelper.spHelper.getUserType() == 'admin'
                 ? sideMenuItemRoutes
                 .map((item) =>
-                admin.SideMenuItem(
+                SideMenuItem(
                     itemName: item.name,
                     onTap: () {
                       if (!menuController.isActive(item.name)) {
@@ -93,7 +91,7 @@ class SideMenu extends StatelessWidget {
                 : SPHelper.spHelper.getUserType() == 'patient'
                 ? PationtsideMenuItemRoutes
                 .map((item) =>
-                patient.SideMenuItem(
+                SideMenuItem(
                     itemName: item.name,
                     onTap: () {
                       if (!menuController.isActive(item.name)) {
@@ -109,7 +107,7 @@ class SideMenu extends StatelessWidget {
                       }
                     }))
                 .toList():DoctorsideMenuItemRoutes
-                .map((item) => doctor.SideMenuItem(
+                .map((item) => SideMenuItem(
                 itemName: item.name,
                 onTap: ()  {
 
