@@ -41,16 +41,16 @@ List<MenuItem> sideMenuItemRoutes = [
  MenuItem(specialtiesDisplayName, specialtiesPageRoute),
  MenuItem(authenticationPageDisplayName, logoutPageRoute),
 ];
-// List<MenuItem> PationtsideMenuItemRoutes = [
-//  MenuItem(PationtoverviewPageDisplayName, PationtoverviewPageRoute),
-//  MenuItem(PationtDiseasePageDisplayName, PationtDiseasePageRoute),
-//   MenuItem(authenticationPageDisplayName, logoutPageRoute),
-//
-// ];
-// List<MenuItem> DoctorsideMenuItemRoutes = [
-//  MenuItem(overviewPageDisplayName, overviewPageRoute),
-//  MenuItem(driversPageDisplayName, driversPageRoute),
-//  MenuItem(clientsPageDisplayName, clientsPageRoute),
-//  MenuItem(specialtiesDisplayName, specialtiesPageRoute),
-//  MenuItem(authenticationPageDisplayName, logoutPageRoute),
-// ];
+List<MenuItem> PationtsideMenuItemRoutes = [
+ MenuItem(PationtoverviewPageDisplayName, PationtoverviewPageRoute),
+ MenuItem(PationtDiseasePageDisplayName, PationtDiseasePageRoute),
+  MenuItem(authenticationPageDisplayName, logoutPageRoute),
+
+];
+List<MenuItem> DoctorsideMenuItemRoutes = [
+ MenuItem(overviewPageDisplayName, overviewPageRoute),
+ MenuItem(driversPageDisplayName, driversPageRoute),
+ MenuItem(clientsPageDisplayName, clientsPageRoute),
+ MenuItem(specialtiesDisplayName, specialtiesPageRoute),
+ MenuItem(authenticationPageDisplayName, logoutPageRoute),
+];
