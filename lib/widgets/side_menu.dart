@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../constants/controllers.dart';
 import '../constants/style.dart';
 import '../helpers/reponsiveness.dart';
+import '../routing/const_route.dart';
 import '../routing/routes.dart';
 import '../services/sp_helper.dart';
 import 'custom_text.dart';

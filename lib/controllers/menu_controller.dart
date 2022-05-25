@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../constants/style.dart';
+import '../routing/const_route.dart';
 import '../routing/routes.dart';
 import '../widgets/custom_image.dart';
 
