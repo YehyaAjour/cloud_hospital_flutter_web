@@ -31,12 +31,7 @@ const DoctorDiseasePageDisplayName = "الأمراض";
 const DoctorDiseasePageRoute = "/Doctordisease";
 
 
-class MenuItem {
-  final String name;
-  final String route;
 
-  MenuItem(this.name, this.route);
-}
 
 
 
