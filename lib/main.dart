@@ -20,7 +20,6 @@ import 'pages/404/error.dart';
 import 'pages/authentication/auth_page.dart';
 import 'pages/authentication/login_screen.dart';
 import 'pages/authentication/register_screen.dart';
-import 'routing/const_route.dart';
 import 'routing/routes.dart';
 Future<void>firebaseMessagingBackgroundHandler(RemoteMessage message)async{
   await Firebase.initializeApp();

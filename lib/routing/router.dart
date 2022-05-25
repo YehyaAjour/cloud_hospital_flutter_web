@@ -5,7 +5,6 @@ import '../pages/drivers/drivers.dart';
 import '../pages/overview/overview.dart';
 import '../pages/pationt/pationt_disease_page.dart';
 import '../pages/specialties/specialties.dart';
-import 'const_route.dart';
 import 'routes.dart';
 
 

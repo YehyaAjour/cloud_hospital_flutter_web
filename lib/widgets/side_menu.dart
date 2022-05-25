@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import '../constants/controllers.dart';
 import '../constants/style.dart';
 import '../helpers/reponsiveness.dart';
-import '../routing/const_route.dart';
 import '../routing/routes.dart';
 import '../services/sp_helper.dart';
 import 'custom_text.dart';
@@ -15,15 +14,7 @@ import 'side_menu_item.dart';
 class SideMenu extends StatelessWidget {
   const SideMenu({ Key key }) : super(key: key);
 
-  List<MenuItem> getMenuItem() {
-    if (SPHelper.spHelper.getUserType() == 'admin') {
-      return sideMenuItemRoutes;
-    } else if (SPHelper.spHelper.getUserType() == 'patient') {
-      return PationtsideMenuItemRoutes;
-    } else {
-      return DoctorsideMenuItemRoutes;
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +61,7 @@ class SideMenu extends StatelessWidget {
 
           Column(
             mainAxisSize: MainAxisSize.min,
-            children: SPHelper.spHelper.getUserType() == 'admin'
-                ? sideMenuItemRoutes
+            children: sideMenuItemRoutes
                 .map((item) =>
                 SideMenuItem(
                     itemName: item.name,
@@ -89,41 +79,7 @@ class SideMenu extends StatelessWidget {
                       }
                     }))
                 .toList()
-                : SPHelper.spHelper.getUserType() == 'patient'
-                ? PationtsideMenuItemRoutes
-                .map((item) =>
-                SideMenuItem(
-                    itemName: item.name,
-                    onTap: () {
-                      if (!menuController.isActive(item.name)) {
-                        menuController.changeActiveItemTo(item.name);
-                        if (ResponsiveWidget.isSmallScreen(context))
-                          Get.back();
-                        navigationController.navigateTo(item.route);
-                      }
-                      if (item.route == logoutPageRoute) {
-                        AuthApis.authApis.logout();
-                        menuController.changeActiveItemTo(
-                            overviewPageDisplayName);
-                      }
-                    }))
-                .toList():DoctorsideMenuItemRoutes
-                .map((item) => SideMenuItem(
-                itemName: item.name,
-                onTap: ()  {
 
-                  if (!menuController.isActive(item.name)) {
-                    menuController.changeActiveItemTo(item.name);
-                    if(ResponsiveWidget.isSmallScreen(context))
-                      Get.back();
-                    navigationController.navigateTo(item.route);
-                  }
-                  if(item.route == logoutPageRoute){
-                    AuthApis.authApis.logout();
-                    menuController.changeActiveItemTo(overviewPageDisplayName);
-                  }
-                }))
-                .toList(),
           )
         ],
       ),
