@@ -2,9 +2,13 @@ import 'package:cloud_hospital/apis/auth_apis.dart';
 import 'package:cloud_hospital/apis/dashboard_apis.dart';
 import 'package:cloud_hospital/controllers/dashboard_controller.dart';
 import 'package:cloud_hospital/services/sp_helper.dart';
+import 'package:cloud_hospital/utils/helper.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,10 +23,38 @@ import 'pages/authentication/auth_page.dart';
 import 'pages/authentication/login_screen.dart';
 import 'pages/authentication/register_screen.dart';
 import 'routing/routes.dart';
-
+Future<void>firebaseMessagingBackgroundHandler(RemoteMessage message)async{
+  await Firebase.initializeApp();
+  print('backgroundMessage');
+  print(message.data.toString());
+}
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    // Replace with actual values
+    options: FirebaseOptions(
+      apiKey: "AIzaSyCAA0KmD5JUmbTXC1nBCOCzQh0OTkHY6k4",
+      appId: "1:1043456810875:web:23c7c139be9ba3da2fa7de",
+      messagingSenderId: "1043456810875",
+      projectId: "trustproject-72236",
+    ),
+  );
+  var token =await FirebaseMessaging.instance.getToken();
 
+  FirebaseMessaging.onMessage.listen((event) {
+    print('comeNotificcation');
+    // print('yehyaabasem'+event.data['id'].toString());
+    Helper.setToast(event.notification.body);
+    Fluttertoast.showToast(msg: event.notification.body);
+  });
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    Helper.setToast(event.notification.body);
+    Fluttertoast.showToast(msg: event.notification.body);
+    print('comeNotificcation');
+    print(event.data.toString());
+  });
+   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+   print(token);
   await SPHelper.spHelper.initSharedPrefrences();
   Get.put(MenuController());
   Get.put(NavigationController());

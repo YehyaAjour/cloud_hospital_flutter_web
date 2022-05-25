@@ -14,71 +14,118 @@ import 'side_menu_item.dart';
 class SideMenu extends StatelessWidget {
   const SideMenu({ Key key }) : super(key: key);
 
+  List<MenuItem> getMenuItem() {
+    if (SPHelper.spHelper.getUserType() == 'admin') {
+      return sideMenuItemRoutes;
+    } else if (SPHelper.spHelper.getUserType() == 'patient') {
+      return PationtsideMenuItemRoutes;
+    } else {
+      return DoctorsideMenuItemRoutes;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
+    double _width = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return Container(
-            color: light,
-            child: ListView(
+      color: light,
+      child: ListView(
+        children: [
+          if(ResponsiveWidget.isSmallScreen(context))
+            Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                if(ResponsiveWidget.isSmallScreen(context))
-                Column(
-                  mainAxisSize: MainAxisSize.min,
+                SizedBox(
+                  height: 40,
+                ),
+                Row(
                   children: [
-                    SizedBox(
-                      height: 40,
+                    SizedBox(width: _width / 48),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: Image.asset("assets/icons/logo.png"),
                     ),
-                    Row(
-                      children: [
-                        SizedBox(width: _width / 48),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: Image.asset("assets/icons/logo.png"),
-                        ),
-                        Flexible(
-                          child: CustomText(
-                            text: "لوحة التحكم",
-                            size: 20,
-                            weight: FontWeight.bold,
-                            color: active,
-                          ),
-                        ),
-                        SizedBox(width: _width / 48),
-                      ],
+                    Flexible(
+                      child: CustomText(
+                        text: "لوحة التحكم",
+                        size: 20,
+                        weight: FontWeight.bold,
+                        color: active,
+                      ),
                     ),
-                    SizedBox(
-                      height: 30,
-                    ),
+                    SizedBox(width: _width / 48),
                   ],
                 ),
-                    Divider(color: lightGrey.withOpacity(.1), ),
-
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: sideMenuItemRoutes
-                      .map((item) => SideMenuItem(
-                          itemName: item.name,
-                          onTap: ()  {
-
-                            if (!menuController.isActive(item.name)) {
-                              menuController.changeActiveItemTo(item.name);
-                              if(ResponsiveWidget.isSmallScreen(context))
-                              Get.back();
-                              navigationController.navigateTo(item.route);
-                            }
-                            if(item.route == logoutPageRoute){
-                              AuthApis.authApis.logout();
-                              menuController.changeActiveItemTo(overviewPageDisplayName);
-
-
-
-                            }
-                          }))
-                      .toList(),
-                )
+                SizedBox(
+                  height: 30,
+                ),
               ],
             ),
-          );
+          Divider(color: lightGrey.withOpacity(.1),),
+
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: SPHelper.spHelper.getUserType() == 'admin'
+                ? sideMenuItemRoutes
+                .map((item) =>
+                SideMenuItem(
+                    itemName: item.name,
+                    onTap: () {
+                      if (!menuController.isActive(item.name)) {
+                        menuController.changeActiveItemTo(item.name);
+                        if (ResponsiveWidget.isSmallScreen(context))
+                          Get.back();
+                        navigationController.navigateTo(item.route);
+                      }
+                      if (item.route == logoutPageRoute) {
+                        AuthApis.authApis.logout();
+                        menuController.changeActiveItemTo(
+                            overviewPageDisplayName);
+                      }
+                    }))
+                .toList()
+                : SPHelper.spHelper.getUserType() == 'patient'
+                ? PationtsideMenuItemRoutes
+                .map((item) =>
+                SideMenuItem(
+                    itemName: item.name,
+                    onTap: () {
+                      if (!menuController.isActive(item.name)) {
+                        menuController.changeActiveItemTo(item.name);
+                        if (ResponsiveWidget.isSmallScreen(context))
+                          Get.back();
+                        navigationController.navigateTo(item.route);
+                      }
+                      if (item.route == logoutPageRoute) {
+                        AuthApis.authApis.logout();
+                        menuController.changeActiveItemTo(
+                            overviewPageDisplayName);
+                      }
+                    }))
+                .toList():DoctorsideMenuItemRoutes
+                .map((item) => SideMenuItem(
+                itemName: item.name,
+                onTap: ()  {
+
+                  if (!menuController.isActive(item.name)) {
+                    menuController.changeActiveItemTo(item.name);
+                    if(ResponsiveWidget.isSmallScreen(context))
+                      Get.back();
+                    navigationController.navigateTo(item.route);
+                  }
+                  if(item.route == logoutPageRoute){
+                    AuthApis.authApis.logout();
+                    menuController.changeActiveItemTo(overviewPageDisplayName);
+                  }
+                }))
+                .toList(),
+          )
+        ],
+      ),
+    );
   }
 }

@@ -1,11 +1,15 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../constants/style.dart';
+import '../../../controllers/dashboard_controller.dart';
 import '../../../widgets/custom_text.dart';
 
 /// Example without datasource
 class Clientstable extends StatelessWidget {
+  DashboardController dashController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,46 +26,40 @@ class Clientstable extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(16),
       margin: EdgeInsets.only(bottom: 30),
-      child:   DataTable2(
+      child: Obx(() => dashController.getAllPationtModelData.value.data == null
+          ? Center(child: CircularProgressIndicator())
+          : DataTable2(
               columnSpacing: 12,
               horizontalMargin: 12,
               minWidth: 600,
               columns: [
                 DataColumn2(
-                  label: Text("Name"),
+                  label: Text("اسم المريض"),
                   size: ColumnSize.L,
                 ),
                 DataColumn(
-                  label: Text('Location'),
+                  label: Text('رقم الهوية'),
                 ),
                 DataColumn(
-                  label: Text('Rating'),
+                  label: Text('الجنس'),
                 ),
                 DataColumn(
                   label: Text('Action'),
                 ),
               ],
               rows: List<DataRow>.generate(
-                  15,
+                  dashController
+                      .getAllPationtModelData.value.data.patients.length,
                   (index) => DataRow(cells: [
-                        DataCell(CustomText(text: "المريض عمر مطر")),
-                        DataCell(CustomText(text: "غزة")),
-                        DataCell(Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.deepOrange,
-                              size: 18,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            CustomText(
-                              text: "4.5",
-                            )
-                          ],
-                        )),
+                        DataCell(CustomText(
+                            text: dashController.getAllPationtModelData.value
+                                .data.patients[index].name)),
+                        DataCell(CustomText(
+                            text: dashController.getAllPationtModelData.value
+                                .data.patients[index].idNumber)),
+                        DataCell(CustomText(
+                            text: dashController.getAllPationtModelData.value
+                                .data.patients[index].idNumber)),
                         DataCell(Container(
                             decoration: BoxDecoration(
                               color: light,
@@ -75,7 +73,7 @@ class Clientstable extends StatelessWidget {
                               color: active.withOpacity(.7),
                               weight: FontWeight.bold,
                             ))),
-                      ]))),
+                      ])))),
     );
   }
 }

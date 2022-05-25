@@ -12,5 +12,7 @@ String logoutURL = 'logout';
 //=================== DashboardURL =======================
 String allDoctorURL = 'doctors';
 String addSpecialitiesURL = 'Specialities';
+String allPationtURL = 'patients';
+String addDiseasesURL = 'diseases';
 
 

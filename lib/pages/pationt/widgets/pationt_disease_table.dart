@@ -8,7 +8,7 @@ import '../../../utils/progress_dialog_utils.dart';
 import '../../../widgets/custom_text.dart';
 
 /// Example without datasource
-class DriversTable extends StatelessWidget {
+class PationtDiseaseTable extends StatelessWidget {
   DashboardController dashController = Get.find();
 
   @override

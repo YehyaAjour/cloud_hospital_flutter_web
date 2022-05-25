@@ -19,6 +19,7 @@ class _SiteLayoutState extends State<SiteLayout> {
   @override
   void initState() {
     DashboardApis.dashboardApis.getAllDoctor();
+    DashboardApis.dashboardApis.getAllPation();
 
     super.initState();
   }

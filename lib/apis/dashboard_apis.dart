@@ -1,10 +1,14 @@
 
 
+import 'dart:io';
+
 import 'package:cloud_hospital/apis/auth_apis.dart';
+import 'package:cloud_hospital/model/all_pation_model.dart';
 import 'package:cloud_hospital/model/login_model.dart';
 import 'package:cloud_hospital/model/register_model.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as myGet;
+import 'package:image_picker/image_picker.dart';
 
 import '../controllers/auth_controller.dart';
 import '../controllers/dashboard_controller.dart';
@@ -39,9 +43,34 @@ class DashboardApis {
     try {
       String token = SPHelper.spHelper.getToken();
       initDio();
-      ProgressDialogUtils.show();
+
+
       Response response = await dio.get(
-        baseUrl + allDoctorURL,
+        baseUrl + allPationtURL,
+        options: Options(headers: {"Accept": "application/json",'Authorization':'Bearer $token'}),
+      );
+      if (response.statusCode == 200) {
+        dashboardController.getAllPationtModelData.value =
+            AllPationtModel.fromJson(response.data);
+        print(" AllPationtModel Successful Stored +${response.data.toString()}");
+        ProgressDialogUtils.hide();
+      } else {
+        ProgressDialogUtils.hide();
+      }
+    } catch (err) {
+      ProgressDialogUtils.hide();
+      print("AllPationtModel ERROR  $err");
+    }
+  }
+
+  getAllPation() async {
+    try {
+      String token = SPHelper.spHelper.getToken();
+      initDio();
+
+
+      Response response = await dio.get(
+        baseUrl + allDoctorURL ,
         options: Options(headers: {"Accept": "application/json",'Authorization':'Bearer $token'}),
       );
       if (response.statusCode == 200) {
@@ -57,6 +86,50 @@ class DashboardApis {
       print("DepartmentDoctorModel  $err");
     }
   }
+
+
+
+
+  addPationtDisease({String name, String description,PickedFile image}) async {
+    try {
+      String token = SPHelper.spHelper.getToken();
+      initDio();
+      ProgressDialogUtils.show();
+      FormData data = FormData.fromMap({
+        'name': name,
+        'description': description,
+         "file": await MultipartFile.fromFile(image.path, filename: image.path),
+      });
+      Response response = await dio.post(
+        baseUrl + addDiseasesURL,
+        data: data,
+        options: Options(headers: {"Accept": "application/json",'Authorization':'Bearer $token'}),
+
+      );
+
+      if (response.statusCode==201) {
+        // print(" addPationtDisease Successful Stored ${response.data.toString()}");
+        // await getDepartment();
+        ProgressDialogUtils.hide();
+        myGet.Get.back();
+        Helper.getSheetSucsses(response.data['message']);
+          print(" addSpecialties Successful Stored ${response.data}");
+
+      } else {
+        ProgressDialogUtils.hide();
+        Helper.getSheetError("هناك خطأ في إضافة مرض");
+      }
+    } catch (err) {
+      ProgressDialogUtils.hide();
+      Helper.getSheetError(err.response.data['message']);
+      print("addPationtDisease Error  $err");
+    }
+  }
+
+
+
+
+
 
   addSpecialties(String name) async {
     try {

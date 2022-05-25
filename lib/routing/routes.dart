@@ -17,6 +17,13 @@ const authenticationPageRoute = "/auth";
 const loginPageRoute = "/login";
 const registerPageRoute = "/register";
 const logoutPageRoute = "/logout";
+//----------------------PationRoute-----------------
+const PationtoverviewPageDisplayName = "نظرة عامة";
+const PationtoverviewPageRoute = "/overview";
+
+const PationtDiseasePageDisplayName = "الأمراض";
+const PationtDiseasePageRoute = "/disease";
+//----------------------PationRoute-----------------
 
 class MenuItem {
   final String name;
@@ -28,6 +35,19 @@ class MenuItem {
 
 
 List<MenuItem> sideMenuItemRoutes = [
+ MenuItem(overviewPageDisplayName, overviewPageRoute),
+ MenuItem(driversPageDisplayName, driversPageRoute),
+ MenuItem(clientsPageDisplayName, clientsPageRoute),
+ MenuItem(specialtiesDisplayName, specialtiesPageRoute),
+ MenuItem(authenticationPageDisplayName, logoutPageRoute),
+];
+List<MenuItem> PationtsideMenuItemRoutes = [
+ MenuItem(PationtoverviewPageDisplayName, PationtoverviewPageRoute),
+ MenuItem(PationtDiseasePageDisplayName, PationtDiseasePageRoute),
+  MenuItem(authenticationPageDisplayName, logoutPageRoute),
+
+];
+List<MenuItem> DoctorsideMenuItemRoutes = [
  MenuItem(overviewPageDisplayName, overviewPageRoute),
  MenuItem(driversPageDisplayName, driversPageRoute),
  MenuItem(clientsPageDisplayName, clientsPageRoute),

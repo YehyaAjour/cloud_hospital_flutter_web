@@ -88,6 +88,7 @@ class AuthApis {
             LoginModel.fromJson(response.data);
         print(" LoginModel Successfull Stored${response.data}");
         print(SPHelper.spHelper.getToken());
+        print(SPHelper.spHelper.getUserType());
 
         ProgressDialogUtils.hide();
 
@@ -124,6 +125,7 @@ class AuthApis {
             LoginModel.fromJson(response.data);
         print("Admin LoginModel Successfull Stored${response.data}");
         print(SPHelper.spHelper.getToken());
+        print(SPHelper.spHelper.getUserType());
 
         ProgressDialogUtils.hide();
 
