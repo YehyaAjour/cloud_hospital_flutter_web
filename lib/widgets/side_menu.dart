@@ -7,6 +7,7 @@ import '../constants/controllers.dart';
 import '../constants/style.dart';
 import '../helpers/reponsiveness.dart';
 import '../routing/routes.dart';
+import '../routing/user_type_list.dart';
 import '../services/sp_helper.dart';
 import 'custom_text.dart';
 import 'side_menu_item.dart';
@@ -61,7 +62,8 @@ class SideMenu extends StatelessWidget {
 
           Column(
             mainAxisSize: MainAxisSize.min,
-            children: sideMenuItemRoutes
+            children: SPHelper.spHelper.getUserType() == 'admin'
+                ? sideMenuItemRoutes
                 .map((item) =>
                 SideMenuItem(
                     itemName: item.name,
@@ -79,7 +81,41 @@ class SideMenu extends StatelessWidget {
                       }
                     }))
                 .toList()
+                : SPHelper.spHelper.getUserType() == 'patient'
+                ? PationtsideMenuItemRoutes
+                .map((item) =>
+                SideMenuItem(
+                    itemName: item.name,
+                    onTap: () {
+                      if (!menuController.isActive(item.name)) {
+                        menuController.changeActiveItemTo(item.name);
+                        if (ResponsiveWidget.isSmallScreen(context))
+                          Get.back();
+                        navigationController.navigateTo(item.route);
+                      }
+                      if (item.route == logoutPageRoute) {
+                        AuthApis.authApis.logout();
+                        menuController.changeActiveItemTo(
+                            overviewPageDisplayName);
+                      }
+                    }))
+                .toList():DoctorsideMenuItemRoutes
+                .map((item) => SideMenuItem(
+                itemName: item.name,
+                onTap: ()  {
 
+                  if (!menuController.isActive(item.name)) {
+                    menuController.changeActiveItemTo(item.name);
+                    if(ResponsiveWidget.isSmallScreen(context))
+                      Get.back();
+                    navigationController.navigateTo(item.route);
+                  }
+                  if(item.route == logoutPageRoute){
+                    AuthApis.authApis.logout();
+                    menuController.changeActiveItemTo(overviewPageDisplayName);
+                  }
+                }))
+                .toList(),
           )
         ],
       ),
