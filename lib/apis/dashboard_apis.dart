@@ -2,6 +2,7 @@
 
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_hospital/model/all_pation_model.dart';
 
@@ -87,15 +88,17 @@ class DashboardApis {
 
 
 
-  addPationtDisease({String name, String description,PickedFile image}) async {
+  addPationtDisease({String name, String description, image}) async {
     try {
+      Uint8List uint8list= await image.readAsBytes();
+      List<int>list =uint8list.cast();
       String token = SPHelper.spHelper.getToken();
       initDio();
       ProgressDialogUtils.show();
       FormData data = FormData.fromMap({
         'name': name,
         'description': description,
-         'file': await MultipartFile.fromFile(image.path, filename: image.path.split('/').last),
+         'file':image!=null?  MultipartFile.fromBytes(list,filename: 'file.png' ):null,
       });
       Response response = await dio.post(
         baseUrl + addDiseasesURL,

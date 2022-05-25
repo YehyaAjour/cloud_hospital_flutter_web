@@ -41,7 +41,7 @@ class DashboardController extends GetxController {
 
 
 
- var image;
+ PickedFile image;
   setPreviewImage(image){
     this.image =image;
     update();

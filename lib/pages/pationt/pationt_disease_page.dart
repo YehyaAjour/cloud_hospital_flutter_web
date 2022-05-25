@@ -85,9 +85,7 @@ class PationtDiseasePage extends StatelessWidget {
                                   builder: (controller) {
                                     return GestureDetector(
                                       onTap: () async {
-                                        PickedFile picture = await ImagePicker
-                                            .platform
-                                            .pickImage(
+                                        PickedFile picture = await ImagePicker().getImage(
                                                 source: ImageSource.gallery);
                                         controller.setPreviewImage(picture);
                                       },
@@ -131,6 +129,8 @@ class PationtDiseasePage extends StatelessWidget {
                                 builder: (controller){
                                   return TextButton(
                                     onPressed: () {
+                                      print(PickedFile(controller.image.path));
+                                      print(controller.image.path);
                                       if (_formKey.currentState.validate()) {
                                         _formKey.currentState.save();
                                         DashboardApis.dashboardApis
@@ -138,7 +138,7 @@ class PationtDiseasePage extends StatelessWidget {
                                             name: dashboardController.diseaseName,
                                             description:
                                             dashboardController.diseaseDetails,
-                                            image: PickedFile(controller.image.path)
+                                            image: controller.image
                                         );
                                       }
                                     },
