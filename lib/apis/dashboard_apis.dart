@@ -1,6 +1,3 @@
-
-
-
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -11,6 +8,7 @@ import 'package:get/get.dart' as myGet;
 import 'package:image_picker/image_picker.dart';
 
 import '../controllers/dashboard_controller.dart';
+import '../model/all_disease_model.dart';
 import '../model/all_doctor_model.dart';
 import '../model/department_doctor_model.dart';
 import '../services/sp_helper.dart';
@@ -35,22 +33,25 @@ class DashboardApis {
     }
   }
 
-
+  //------------------------------------- ADMIN DASHBOARD ---------------------------------------//
 
   getAllDoctor() async {
     try {
       String token = SPHelper.spHelper.getToken();
       initDio();
 
-
       Response response = await dio.get(
         baseUrl + allPationtURL,
-        options: Options(headers: {"Accept": "application/json",'Authorization':'Bearer $token'}),
+        options: Options(headers: {
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token'
+        }),
       );
       if (response.statusCode == 200) {
         dashboardController.getAllPationtModelData.value =
             AllPationtModel.fromJson(response.data);
-        print(" AllPationtModel Successful Stored +${response.data.toString()}");
+        print(
+            " AllPationtModel Successful Stored +${response.data.toString()}");
         ProgressDialogUtils.hide();
       } else {
         ProgressDialogUtils.hide();
@@ -66,10 +67,12 @@ class DashboardApis {
       String token = SPHelper.spHelper.getToken();
       initDio();
 
-
       Response response = await dio.get(
-        baseUrl + allDoctorURL ,
-        options: Options(headers: {"Accept": "application/json",'Authorization':'Bearer $token'}),
+        baseUrl + allDoctorURL,
+        options: Options(headers: {
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token'
+        }),
       );
       if (response.statusCode == 200) {
         dashboardController.getAllDoctorModelData.value =
@@ -85,36 +88,38 @@ class DashboardApis {
     }
   }
 
+  //------------------------------------- PATIENT DASHBOARD ---------------------------------------//
 
-
-
-  addPationtDisease({String name, String description, image}) async {
+  addPationtDiseaseWithImage({String name, String description, image}) async {
     try {
-      Uint8List uint8list= await image.readAsBytes();
-      List<int>list =uint8list.cast();
+      Uint8List uint8list = await image.readAsBytes();
+      List<int> list = uint8list.cast();
       String token = SPHelper.spHelper.getToken();
       initDio();
       ProgressDialogUtils.show();
       FormData data = FormData.fromMap({
         'name': name,
         'description': description,
-         'file':image!=null?  MultipartFile.fromBytes(list,filename: 'file.png' ):null,
+        'file': image != null
+            ? MultipartFile.fromBytes(list, filename: 'file.png')
+            : null,
       });
       Response response = await dio.post(
         baseUrl + addDiseasesURL,
         data: data,
-        options: Options(headers: {"Accept": "application/json",'Authorization':'Bearer $token'}),
-
+        options: Options(headers: {
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token'
+        }),
       );
 
-      if (response.statusCode==201) {
+      if (response.statusCode == 201) {
         // print(" addPationtDisease Successful Stored ${response.data.toString()}");
-        // await getDepartment();
+        await getPationtDisease();
         ProgressDialogUtils.hide();
         myGet.Get.back();
         Helper.getSheetSucsses(response.data['message']);
-          print(" addSpecialties Successful Stored ${response.data.toString()}");
-
+        print(" addPationtDisease Successful  ${response.data.toString()}");
       } else {
         ProgressDialogUtils.hide();
         Helper.getSheetError("هناك خطأ في إضافة مرض");
@@ -126,10 +131,69 @@ class DashboardApis {
     }
   }
 
+  addPationtDiseaseWithoutImage({String name, String description}) async {
+    try {
+      String token = SPHelper.spHelper.getToken();
+      initDio();
+      ProgressDialogUtils.show();
+      FormData data = FormData.fromMap({
+        'name': name,
+        'description': description,
+      });
+      Response response = await dio.post(
+        baseUrl + addDiseasesURL,
+        data: data,
+        options: Options(headers: {
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token'
+        }),
+      );
 
+      if (response.statusCode == 201) {
+        // print(" addPationtDisease Successful Stored ${response.data.toString()}");
+        await getPationtDisease();
+        ProgressDialogUtils.hide();
+        myGet.Get.back();
+        Helper.getSheetSucsses(response.data['message']);
+        print(" addPationtDisease Successful  ${response.data.toString()}");
+      } else {
+        ProgressDialogUtils.hide();
+        Helper.getSheetError("هناك خطأ في إضافة مرض");
+      }
+    } catch (err) {
+      ProgressDialogUtils.hide();
+      Helper.getSheetError(err.response.data['message']);
+      print("addPationtDisease Error  $err");
+    }
+  }
 
+  getPationtDisease() async {
+    try {
+      String token = SPHelper.spHelper.getToken();
+      initDio();
+      ProgressDialogUtils.show();
+      Response response = await dio.get(
+        baseUrl + getDiseasesURL,
+        options: Options(headers: {
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token'
+        }),
+      );
 
-
+      if (response.statusCode == 200) {
+        dashboardController.getAllDiseasesModelData.value =
+            AllDiseasesModel.fromJson(response.data);
+        print(" GetPationtDisease response ${response.data.toString()}");
+        ProgressDialogUtils.hide();
+        print(" GETPationtDisease Successful Stored");
+      } else {
+        ProgressDialogUtils.hide();
+      }
+    } catch (err) {
+      ProgressDialogUtils.hide();
+      print("addPationtDisease Error  $err");
+    }
+  }
 
   addSpecialties(String name) async {
     try {
@@ -141,18 +205,20 @@ class DashboardApis {
       });
       Response response = await dio.post(
         baseUrl + addSpecialitiesURL,
-          data: data,
-        options: Options(headers: {"Accept": "application/json",'Authorization':'Bearer $token'}),
-
+        data: data,
+        options: Options(headers: {
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token'
+        }),
       );
 
-      if (response.statusCode==201) {
+      if (response.statusCode == 201) {
         print(" addSpecialties Successful Stored ${response.data}");
         await getDepartment();
         ProgressDialogUtils.hide();
         myGet.Get.back();
         Helper.getSheetSucsses(response.data['message']);
-       //  print(" addSpecialties Successful Stored ${response.data}");
+        //  print(" addSpecialties Successful Stored ${response.data}");
 
       } else {
         ProgressDialogUtils.hide();
@@ -180,8 +246,4 @@ class DashboardApis {
       print("DepartmentDoctorModel  $err");
     }
   }
-
-
-
-
 }

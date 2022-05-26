@@ -1,4 +1,5 @@
 import 'package:cloud_hospital/apis/dashboard_apis.dart';
+import 'package:cloud_hospital/services/sp_helper.dart';
 import 'package:flutter/material.dart';
 
 
@@ -18,8 +19,13 @@ class _SiteLayoutState extends State<SiteLayout> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   @override
   void initState() {
-    DashboardApis.dashboardApis.getAllDoctor();
-    DashboardApis.dashboardApis.getAllPation();
+   if(SPHelper.spHelper.getUserType()=='admin'){
+     DashboardApis.dashboardApis.getAllDoctor();
+     DashboardApis.dashboardApis.getAllPation();
+   }else if(SPHelper.spHelper.getUserType()=='patient'){
+     DashboardApis.dashboardApis.getPationtDisease();
+   }
+
 
     super.initState();
   }

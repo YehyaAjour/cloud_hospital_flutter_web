@@ -27,33 +27,29 @@ class PationtDiseaseTable extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(16),
       margin: EdgeInsets.only(bottom: 30),
-      child: Obx(() => dashController.getAllDoctorModelData.value.data == null
+      child: Obx(() => dashController.getAllDiseasesModelData.value.data == null
           ? Center(child: CircularProgressIndicator())
           : DataTable2(
               columnSpacing: 12,
               horizontalMargin: 12,
               minWidth: 600,
-              columns: [
+              columns: const[
                 DataColumn2(
-                  label: Text("الإسم"),
+                  label: Text("المرض"),
                   size: ColumnSize.L,
                 ),
                 DataColumn(
-                  label: Text('البريد الإلكتروني'),
-                ),
-                DataColumn(
-                  label: Text('التخصص'),
+                  label: Text('تفاصيل عن المرض'),
                 ),
                 DataColumn(
                   label: Text('Action'),
                 ),
               ],
               rows: List<DataRow>.generate(
-                  dashController.getAllDoctorModelData.value.data.doctors.length,
+                  dashController.getAllDiseasesModelData.value.data.length,
                   (index) => DataRow(cells: [
-                        DataCell(CustomText(text: dashController.getAllDoctorModelData.value.data.doctors[index].name)),
-                        DataCell(CustomText(text: dashController.getAllDoctorModelData.value.data.doctors[index].email)),
-                        DataCell(CustomText(text: dashController.getAllDoctorModelData.value.data.doctors[index].speciality)),
+                        DataCell(CustomText(text: dashController.getAllDiseasesModelData.value.data[index].name)),
+                        DataCell(CustomText(text: dashController.getAllDiseasesModelData.value.data[index].description)),
                         DataCell(Container(
                             decoration: BoxDecoration(
                               color: light,

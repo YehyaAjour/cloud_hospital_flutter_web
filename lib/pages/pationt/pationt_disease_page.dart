@@ -48,7 +48,7 @@ class PationtDiseasePage extends StatelessWidget {
                         return Form(
                           key: _formKey,
                           child: AlertDialog(
-                            title: Text('إضافة تخصص'),
+                            title: Text('إضافة مرض'),
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -129,17 +129,26 @@ class PationtDiseasePage extends StatelessWidget {
                                 builder: (controller){
                                   return TextButton(
                                     onPressed: () {
-                                      print(PickedFile(controller.image.path));
-                                      print(controller.image.path);
+                                      // print(PickedFile(controller.image.path));
+                                      // print(controller.image.path);
                                       if (_formKey.currentState.validate()) {
                                         _formKey.currentState.save();
-                                        DashboardApis.dashboardApis
-                                            .addPationtDisease(
-                                            name: dashboardController.diseaseName,
-                                            description:
-                                            dashboardController.diseaseDetails,
-                                            image: controller.image
-                                        );
+                                       if(controller.image!=null){
+                                         DashboardApis.dashboardApis
+                                             .addPationtDiseaseWithImage(
+                                             name: dashboardController.diseaseName,
+                                             description:
+                                             dashboardController.diseaseDetails,
+                                             image: controller.image
+                                         );
+                                       }else{
+                                         DashboardApis.dashboardApis
+                                             .addPationtDiseaseWithoutImage(
+                                             name: dashboardController.diseaseName,
+                                             description:
+                                             dashboardController.diseaseDetails,
+                                         );
+                                       }
                                       }
                                     },
                                     child: const CustomText(

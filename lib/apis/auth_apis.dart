@@ -30,84 +30,7 @@ class AuthApis {
       return dio;
     }
   }
-
-  loginDoctor({String type, String email, String password}) async {
-    try {
-      var token =await FirebaseMessaging.instance.getToken();
-
-      initDio();
-      ProgressDialogUtils.show();
-
-      FormData data = FormData.fromMap({
-        'type': type,
-        'email': email,
-        'password': password,
-        'FcmToken': token
-      });
-      Response response = await dio.post(baseUrl + loginURL,
-          data: data,
-          options: Options(headers: {"Accept": "application/json"}));
-      if (response.statusCode == 200) {
-        await SPHelper.spHelper.setToken(response.data['data']['token']);//save token in shared preferences
-        await SPHelper.spHelper.setUserType(response.data['data']['user']['type']);//save userType in shared preferences
-        authController.getLoginModelData.value =
-            LoginModel.fromJson(response.data);
-        print(" LoginModel Successfull Stored${response.data}");
-        print("token for user is :"+SPHelper.spHelper.getToken());
-        print("UserType for user is :"+SPHelper.spHelper.getUserType());
-
-        ProgressDialogUtils.hide();
-
-        myGet.Get.offAllNamed(rootRoute);
-        Helper.getSheetSucsses(response.data['message']);
-      } else {
-        ProgressDialogUtils.hide();
-      }
-    } on DioError catch (err) {
-      ProgressDialogUtils.hide();
-      Helper.getSheetError(err.response.data['message']);
-      print(err);
-    }
-  }
-
-  loginPatient({String type, String idNumber, String password}) async {
-    try {
-      var token =await FirebaseMessaging.instance.getToken();
-      initDio();
-      ProgressDialogUtils.show();
-
-      FormData data = FormData.fromMap({
-        'type': type,
-        'id_number': idNumber,
-        'password': password,
-        'FcmToken': token
-      });
-      Response response = await dio.post(baseUrl + loginURL,
-          data: data,
-          options: Options(headers: {"Accept": "application/json"}));
-      if (response.statusCode == 200) {
-        await SPHelper.spHelper.setToken(response.data['data']['token']);//save token in shared preferences
-        await SPHelper.spHelper.setUserType(response.data['data']['patient']['type']);//save userType in shared preferences
-
-        authController.getLoginModelData.value =
-            LoginModel.fromJson(response.data);
-        print(" LoginModel Successfull Stored${response.data}");
-        print(SPHelper.spHelper.getToken());
-        print(SPHelper.spHelper.getUserType());
-
-        ProgressDialogUtils.hide();
-
-        myGet.Get.offAllNamed(rootRoute);
-        Helper.getSheetSucsses(response.data['message']);
-      } else {
-        ProgressDialogUtils.hide();
-      }
-    } on DioError catch (err) {
-      ProgressDialogUtils.hide();
-      Helper.getSheetError(err.response.data['message']);
-      print(err);
-    }
-  }
+  //------------------------- ADMIN AUTH -----------------------------------//
 
   loginAdmin({String type, String email, String password}) async {
     try {
@@ -148,15 +71,56 @@ class AuthApis {
     }
   }
 
+  //------------------------- Doctor AUTH -----------------------------------//
 
+  loginDoctor({String type, String email, String password}) async {
+    try {
+      var token =await FirebaseMessaging.instance.getToken();
+
+      initDio();
+      ProgressDialogUtils.show();
+
+      FormData data = FormData.fromMap({
+        'type': type,
+        'email': email,
+        'password': password,
+        'FcmToken': token
+      });
+      Response response = await dio.post(baseUrl + loginURL,
+          data: data,
+          options: Options(headers: {"Accept": "application/json"}));
+      if (response.statusCode == 200) {
+        await SPHelper.spHelper.setToken(response.data['data']['token']);//save token in shared preferences
+        await SPHelper.spHelper.setUserType(response.data['data']['user']['type']);//save userType in shared preferences
+        authController.getLoginModelData.value =
+            LoginModel.fromJson(response.data);
+        print(" LoginModel Successfull Stored${response.data}");
+        print("token for user is :"+SPHelper.spHelper.getToken());
+        print("UserType for user is :"+SPHelper.spHelper.getUserType());
+
+        ProgressDialogUtils.hide();
+
+        myGet.Get.offAllNamed(rootRoute);
+        Helper.getSheetSucsses(response.data['message']);
+      } else {
+        ProgressDialogUtils.hide();
+      }
+    } on DioError catch (err) {
+      ProgressDialogUtils.hide();
+      Helper.getSheetError(err.response.data['message']);
+      print(err);
+    }
+  }
 
   registerDoctor(
       {String type,
-      String name,
-      String email,
-      String password,
-      String speciality_id}) async {
+        String name,
+        String email,
+        String password,
+        String speciality_id}) async {
     try {
+      var fcmToken =await FirebaseMessaging.instance.getToken();
+
       initDio();
       ProgressDialogUtils.show();
       FormData data = FormData.fromMap(
@@ -166,6 +130,7 @@ class AuthApis {
           "email": email,
           "password": password,
           "speciality_id": speciality_id,
+          "FcmToken": fcmToken,
         },
       );
       // log(data.toString());
@@ -195,14 +160,57 @@ class AuthApis {
       Helper.getSheetError(err.response.data['data']);
     }
   }
+
+  //------------------------- PATIENT AUTH -----------------------------------//
+
+  loginPatient({String type, String idNumber, String password}) async {
+    try {
+      var token =await FirebaseMessaging.instance.getToken();
+      initDio();
+      ProgressDialogUtils.show();
+
+      FormData data = FormData.fromMap({
+        'type': type,
+        'id_number': idNumber,
+        'password': password,
+        'FcmToken': token
+      });
+      Response response = await dio.post(baseUrl + loginURL,
+          data: data,
+          options: Options(headers: {"Accept": "application/json"}));
+      if (response.statusCode == 200) {
+        await SPHelper.spHelper.setToken(response.data['data']['token']);//save token in shared preferences
+        await SPHelper.spHelper.setUserType(response.data['data']['patient']['type']);//save userType in shared preferences
+
+        authController.getLoginModelData.value =
+            LoginModel.fromJson(response.data);
+        print(" LoginModel Successfull Stored${response.data}");
+        print(SPHelper.spHelper.getToken());
+        print(SPHelper.spHelper.getUserType());
+
+        ProgressDialogUtils.hide();
+
+        myGet.Get.offAllNamed(rootRoute);
+        Helper.getSheetSucsses(response.data['message']);
+      } else {
+        ProgressDialogUtils.hide();
+      }
+    } on DioError catch (err) {
+      ProgressDialogUtils.hide();
+      Helper.getSheetError(err.response.data['message']);
+      print(err);
+    }
+  }
+
   registerPatient(
       {String type,
-      String name,
-      String id_number,
-      String password,
-      String password_confirmation,
-      String gender}) async {
+        String name,
+        String id_number,
+        String password,
+        String password_confirmation,
+        String gender}) async {
     try {
+      var fcmToken =await FirebaseMessaging.instance.getToken();
       initDio();
       ProgressDialogUtils.show();
       FormData data = FormData.fromMap(
@@ -213,6 +221,7 @@ class AuthApis {
           "password": password,
           "password_confirmation": password_confirmation,
           "gender": gender,
+          "FcmToken": fcmToken,
         },
       );
       // log(data.toString());
@@ -243,6 +252,7 @@ class AuthApis {
     }
   }
 
+  //------------------------- LOGOUT -----------------------------------//
 
   logout() async {
     String token = SPHelper.spHelper.getToken();

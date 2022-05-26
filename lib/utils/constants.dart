@@ -14,5 +14,6 @@ String allDoctorURL = 'doctors';
 String addSpecialitiesURL = 'Specialities';
 String allPationtURL = 'patients';
 String addDiseasesURL = 'diseases';
+String getDiseasesURL = 'diseases';
 
 
