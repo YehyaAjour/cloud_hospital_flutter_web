@@ -1,7 +1,9 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
+import '../../../apis/dashboard_apis.dart';
 import '../../../constants/style.dart';
 import '../../../controllers/dashboard_controller.dart';
 import '../../../widgets/custom_text.dart';
@@ -32,7 +34,7 @@ class Clientstable extends StatelessWidget {
               columnSpacing: 12,
               horizontalMargin: 12,
               minWidth: 600,
-              columns: [
+              columns: const[
                 DataColumn2(
                   label: Text("اسم المريض"),
                   size: ColumnSize.L,
@@ -48,18 +50,15 @@ class Clientstable extends StatelessWidget {
                 ),
               ],
               rows: List<DataRow>.generate(
-                  dashController
-                      .getAllPationtModelData.value.data.patients.length,
+                  DashboardApis.dashboardApis.patientList
+                      .length,
                   (index) => DataRow(cells: [
                         DataCell(CustomText(
-                            text: dashController.getAllPationtModelData.value
-                                .data.patients[index].name)),
+                            text:  DashboardApis.dashboardApis.patientList[index].name)),
                         DataCell(CustomText(
-                            text: dashController.getAllPationtModelData.value
-                                .data.patients[index].idNumber)),
+                            text:  DashboardApis.dashboardApis.patientList[index].idNumber)),
                         DataCell(CustomText(
-                            text: dashController.getAllPationtModelData.value
-                                .data.patients[index].idNumber)),
+                            text:  DashboardApis.dashboardApis.patientList[index].gender)),
                         DataCell(Container(
                             decoration: BoxDecoration(
                               color: light,

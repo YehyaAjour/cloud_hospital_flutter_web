@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../constants/style.dart';
-import '../../../utils/progress_dialog_utils.dart';
 import '../../../widgets/custom_text.dart';
 
 /// Example without datasource
@@ -28,46 +27,58 @@ class DriversTable extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       margin: EdgeInsets.only(bottom: 30),
       child: Obx(() => dashController.getAllDoctorModelData.value.data == null
-          ? Center(child: CircularProgressIndicator())
-          : DataTable2(
-              columnSpacing: 12,
-              horizontalMargin: 12,
-              minWidth: 600,
-              columns: [
-                DataColumn2(
-                  label: Text("الإسم"),
-                  size: ColumnSize.L,
-                ),
-                DataColumn(
-                  label: Text('البريد الإلكتروني'),
-                ),
-                DataColumn(
-                  label: Text('التخصص'),
-                ),
-                DataColumn(
-                  label: Text('Action'),
-                ),
-              ],
-              rows: List<DataRow>.generate(
-                  dashController.getAllDoctorModelData.value.data.doctors.length,
-                  (index) => DataRow(cells: [
-                        DataCell(CustomText(text: dashController.getAllDoctorModelData.value.data.doctors[index].name)),
-                        DataCell(CustomText(text: dashController.getAllDoctorModelData.value.data.doctors[index].email)),
-                        DataCell(CustomText(text: dashController.getAllDoctorModelData.value.data.doctors[index].speciality)),
-                        DataCell(Container(
-                            decoration: BoxDecoration(
-                              color: light,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: active, width: .5),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
-                            child: CustomText(
-                              text: "Block",
-                              color: active.withOpacity(.7),
-                              weight: FontWeight.bold,
-                            ))),
-                      ])))),
+          ?const Center(child: CircularProgressIndicator())
+          : dashController.getAllDoctorModelData.value.data.doctors.isEmpty
+              ?const Center(
+                  child:  CustomText(
+                  text: 'لا يوجد أطباء مسجلين',
+                ))
+              : DataTable2(
+                  columnSpacing: 12,
+                  horizontalMargin: 12,
+                  minWidth: 600,
+                  columns: const[
+                    DataColumn2(
+                      label: Text("الإسم"),
+                      size: ColumnSize.L,
+                    ),
+                    DataColumn(
+                      label: Text('البريد الإلكتروني'),
+                    ),
+                    DataColumn(
+                      label: Text('التخصص'),
+                    ),
+                    DataColumn(
+                      label: Text('Action'),
+                    ),
+                  ],
+                  rows: List<DataRow>.generate(
+                      dashController
+                          .getAllDoctorModelData.value.data.doctors.length,
+                      (index) => DataRow(cells: [
+                            DataCell(CustomText(
+                                text: dashController.getAllDoctorModelData.value
+                                    .data.doctors[index].name)),
+                            DataCell(CustomText(
+                                text: dashController.getAllDoctorModelData.value
+                                    .data.doctors[index].email)),
+                            DataCell(CustomText(
+                                text: dashController.getAllDoctorModelData.value
+                                    .data.doctors[index].speciality)),
+                            DataCell(Container(
+                                decoration: BoxDecoration(
+                                  color: light,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: active, width: .5),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 6),
+                                child: CustomText(
+                                  text: "Block",
+                                  color: active.withOpacity(.7),
+                                  weight: FontWeight.bold,
+                                ))),
+                          ])))),
     );
   }
 }

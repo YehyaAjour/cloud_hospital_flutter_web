@@ -244,7 +244,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               widget.formStateRegister.currentState.save();
                               if (widget.formStateRegister.currentState
                                   .validate()) {
-
                                 if (controller.accountType == 'Doctor') {
                                   if(_dropDownValue!=null){
                                     AuthApis.authApis.registerDoctor(
@@ -252,6 +251,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       email: authController.emailR,
                                       name: authController.nameR,
                                       password: authController.passwordR,
+                                      password_confirmation: authController.confirmPassword,
                                       speciality_id: _dropDownValue);}else{
                                     Helper.getSheetError('الرجاء ادخال التخصص');
                                   }

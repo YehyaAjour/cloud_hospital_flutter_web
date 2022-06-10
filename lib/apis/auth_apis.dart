@@ -73,7 +73,7 @@ class AuthApis {
 
   //------------------------- Doctor AUTH -----------------------------------//
 
-  loginDoctor({String type, String email, String password}) async {
+  loginDoctor({String type, String email, String password,}) async {
     try {
       var token =await FirebaseMessaging.instance.getToken();
 
@@ -117,7 +117,7 @@ class AuthApis {
         String name,
         String email,
         String password,
-        String speciality_id}) async {
+        String speciality_id,String password_confirmation}) async {
     try {
       var fcmToken =await FirebaseMessaging.instance.getToken();
 
@@ -129,6 +129,7 @@ class AuthApis {
           "name": name,
           "email": email,
           "password": password,
+          "password_confirmation": password_confirmation,
           "speciality_id": speciality_id,
           "FcmToken": fcmToken,
         },

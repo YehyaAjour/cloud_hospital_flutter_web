@@ -34,14 +34,15 @@ class DashboardApis {
   }
 
   //------------------------------------- ADMIN DASHBOARD ---------------------------------------//
-
-  getAllDoctor() async {
+List<dynamic> patientList =[];
+  getAllPation({int pageNumber=1}) async {
     try {
       String token = SPHelper.spHelper.getToken();
       initDio();
+      ProgressDialogUtils.show();
 
       Response response = await dio.get(
-        baseUrl + allPationtURL,
+        baseUrl + allPationtURL +'?page=$pageNumber',
         options: Options(headers: {
           "Accept": "application/json",
           'Authorization': 'Bearer $token'
@@ -50,6 +51,13 @@ class DashboardApis {
       if (response.statusCode == 200) {
         dashboardController.getAllPationtModelData.value =
             AllPationtModel.fromJson(response.data);
+
+
+           dashboardController.getAllPationtModelData.value.data.patients.forEach((element) {
+              patientList.add(element);
+           });
+
+
         print(
             " AllPationtModel Successful Stored +${response.data.toString()}");
         ProgressDialogUtils.hide();
@@ -61,8 +69,7 @@ class DashboardApis {
       print("AllPationtModel ERROR  $err");
     }
   }
-
-  getAllPation() async {
+  getAllDoctor() async {
     try {
       String token = SPHelper.spHelper.getToken();
       initDio();
@@ -214,7 +221,7 @@ class DashboardApis {
 
       if (response.statusCode == 201) {
         print(" addSpecialties Successful Stored ${response.data}");
-        await getDepartment();
+        await getSpecialties();
         ProgressDialogUtils.hide();
         myGet.Get.back();
         Helper.getSheetSucsses(response.data['message']);
@@ -231,7 +238,7 @@ class DashboardApis {
     }
   }
 
-  getDepartment() async {
+  getSpecialties() async {
     try {
       initDio();
       Response response = await dio.get(

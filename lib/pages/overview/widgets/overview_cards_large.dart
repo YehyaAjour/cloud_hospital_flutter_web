@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import '../../../controllers/dashboard_controller.dart';
 import 'info_card.dart';
 
 
 class OverviewCardsLargeScreen extends StatelessWidget {
-
+DashboardController dashboardController = Get.find();
   @override
   Widget build(BuildContext context) {
+
    double _width = MediaQuery.of(context).size.width;
 
     return  Row(
               children: [
                 InfoCard(
-                  title: "Rides in progress",
-                  value: "7",
+                  title: "عدد الأطباء",
+                  value: '5',
                   onTap: () {},
                   topColor: Colors.orange,
                 ),
@@ -21,28 +23,30 @@ class OverviewCardsLargeScreen extends StatelessWidget {
                   width: _width / 64,
                 ),
                 InfoCard(
-                  title: "Packages delivered",
-                  value: "17",
+                  title: "عدد المرضى",
+                  value: '11',
+                  onTap: () {},
                   topColor: Colors.lightGreen,
-                  onTap: () {},
+
                 ),
                 SizedBox(
                   width: _width / 64,
                 ),
                 InfoCard(
-                  title: "Cancelled delivery",
-                  value: "3",
+                  title: "عدد تخصصات الأطباء",
+                  value: '10',
+                  onTap: () {},
                   topColor: Colors.redAccent,
-                  onTap: () {},
+
                 ),
-                SizedBox(
-                  width: _width / 64,
-                ),
-                InfoCard(
-                  title: "Scheduled deliveries",
-                  value: "32",
-                  onTap: () {},
-                ),
+                // SizedBox(
+                //   width: _width / 64,
+                // ),
+                // InfoCard(
+                //   title: "Scheduled deliveries",
+                //   value: "32",
+                //   onTap: () {},
+                // ),
               ],
             );
   }

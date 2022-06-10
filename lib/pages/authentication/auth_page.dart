@@ -19,7 +19,7 @@ class _AuthPageState extends State<AuthPage> {
   Option selectedOption = Option.LogIn;
 @override
   void initState() {
-      DashboardApis.dashboardApis.getDepartment();
+      DashboardApis.dashboardApis.getSpecialties();
 
     super.initState();
   }

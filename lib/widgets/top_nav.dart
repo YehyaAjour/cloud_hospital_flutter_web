@@ -51,7 +51,7 @@ AppBar(
                       color: lightGrey,
                     ),
               SizedBox(width: 24,),
-              CustomText(text: "الأدمن عمر مطر", color: lightGrey,),
+              CustomText(text: "Yehya Admin", color: lightGrey,),
               SizedBox(width: 16,),
               Container(
                   decoration: BoxDecoration(
