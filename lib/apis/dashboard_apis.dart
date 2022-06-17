@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_hospital/model/all_pation_model.dart';
+import 'package:cloud_hospital/model/disease_by_pationt_model.dart';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as myGet;
@@ -34,15 +35,16 @@ class DashboardApis {
   }
 
   //------------------------------------- ADMIN DASHBOARD ---------------------------------------//
-List<dynamic> patientList =[];
-  getAllPation({int pageNumber=1}) async {
+  List<dynamic> patientList = [];
+
+  getAllPation({int pageNumber = 1}) async {
     try {
       String token = SPHelper.spHelper.getToken();
       initDio();
       ProgressDialogUtils.show();
 
       Response response = await dio.get(
-        baseUrl + allPationtURL +'?page=$pageNumber',
+        baseUrl + allPationtURL + '?page=$pageNumber',
         options: Options(headers: {
           "Accept": "application/json",
           'Authorization': 'Bearer $token'
@@ -52,11 +54,10 @@ List<dynamic> patientList =[];
         dashboardController.getAllPationtModelData.value =
             AllPationtModel.fromJson(response.data);
 
-
-           dashboardController.getAllPationtModelData.value.data.patients.forEach((element) {
-              patientList.add(element);
-           });
-
+        dashboardController.getAllPationtModelData.value.data.patients
+            .forEach((element) {
+          patientList.add(element);
+        });
 
         print(
             " AllPationtModel Successful Stored +${response.data.toString()}");
@@ -69,6 +70,7 @@ List<dynamic> patientList =[];
       print("AllPationtModel ERROR  $err");
     }
   }
+
   getAllDoctor() async {
     try {
       String token = SPHelper.spHelper.getToken();
@@ -92,6 +94,69 @@ List<dynamic> patientList =[];
     } catch (err) {
       ProgressDialogUtils.hide();
       print("DepartmentDoctorModel  $err");
+    }
+  }
+
+  getDiseaseByPatient(int patientId) async {
+    try {
+      String token = SPHelper.spHelper.getToken();
+      initDio();
+
+      Response response = await dio.get(
+        baseUrl + DiseaseByPatientURL + '$patientId',
+        options: Options(headers: {
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token'
+        }),
+      );
+      if (response.statusCode == 200) {
+        dashboardController.getDiseaseByPatientModelData.value =
+            DiseaseByPatientModel.fromJson(response.data);
+        print(" DiseaseByPatientModel Successful Stored ${response.data}");
+        ProgressDialogUtils.hide();
+      } else {
+        ProgressDialogUtils.hide();
+      }
+    } catch (err) {
+      ProgressDialogUtils.hide();
+      print("DiseaseByPatientModel  $err");
+    }
+  }
+
+  assignPationtDiseaseToDoctor(String doctor_id, String patiant_id,
+      String disease_id, String appointment) async {
+    try {
+      String token = SPHelper.spHelper.getToken();
+      initDio();
+      ProgressDialogUtils.show();
+      FormData data = FormData.fromMap({
+        'doctor_id': doctor_id,
+        'patiant_id': patiant_id,
+        'appointment': appointment,
+        'disease_id': disease_id,
+
+      });
+      Response response = await dio.post(
+        baseUrl + assignDiseaseByPatientURL,
+        data: data,
+        options: Options(headers: {
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token'
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        ProgressDialogUtils.hide();
+        myGet.Get.back();
+        Helper.getSheetSucsses(response.data['message']);
+        print(" assignPationtDiseaseToDoctor Successful  ${response.data.toString()}");
+      } else {
+        ProgressDialogUtils.hide();
+        Helper.getSheetError("هناك خطأ");
+      }
+    } catch (err) {
+      ProgressDialogUtils.hide();
+      print("assignPationtDiseaseToDoctor Error  $err");
     }
   }
 

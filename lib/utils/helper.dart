@@ -45,4 +45,5 @@ class Helper {
   }
 
   static var appRaduis = BorderRadius.circular(8);
+
 }

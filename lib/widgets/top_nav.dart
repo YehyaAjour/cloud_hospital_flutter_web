@@ -1,3 +1,4 @@
+import 'package:cloud_hospital/services/sp_helper.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/style.dart';
@@ -51,7 +52,7 @@ AppBar(
                       color: lightGrey,
                     ),
               SizedBox(width: 24,),
-              CustomText(text: "Yehya Admin", color: lightGrey,),
+              CustomText(text: SPHelper.spHelper.getUserName(), color: lightGrey,),
               SizedBox(width: 16,),
               Container(
                   decoration: BoxDecoration(

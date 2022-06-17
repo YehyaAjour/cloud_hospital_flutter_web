@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -5,12 +6,14 @@ import '../model/all_disease_model.dart';
 import '../model/all_doctor_model.dart';
 import '../model/all_pation_model.dart';
 import '../model/department_doctor_model.dart';
+import '../model/disease_by_pationt_model.dart';
 
 class DashboardController extends GetxController {
   Rx<AllDoctorsModel> getAllDoctorModelData = AllDoctorsModel().obs;
   Rx<DepartmentDoctorModel> getDepartmentDoctorModelData = DepartmentDoctorModel().obs;
   Rx<AllPationtModel> getAllPationtModelData = AllPationtModel().obs;
   Rx<AllDiseasesModel> getAllDiseasesModelData = AllDiseasesModel().obs;
+  Rx<DiseaseByPatientModel> getDiseaseByPatientModelData = DiseaseByPatientModel().obs;
 
   //============Admin=============  //============Admin=============  //============Admin=============
   //============ TEXT FIELD VALIDATE AND ADD SPECIALTIES =============
@@ -23,6 +26,8 @@ class DashboardController extends GetxController {
       return "الرجاء التخصص";
     }
   }
+
+
 //============PATIENT=============//============PATIENT=============//============PATIENT=============
 
 //************ PATIENT TEXT FIELD VALIDATE AND ADD Disease ************

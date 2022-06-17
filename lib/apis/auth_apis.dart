@@ -50,6 +50,7 @@ class AuthApis {
       if (response.statusCode == 200) {
         await SPHelper.spHelper.setToken(response.data['data']['token']);//save token in shared preferences
         await SPHelper.spHelper.setUserType(response.data['data']['user']['type']);//save userType in shared preferences
+        await SPHelper.spHelper.setUserName(response.data['data']['user']['name']);//save userName in shared preferences
 
         authController.getLoginModelData.value =
             LoginModel.fromJson(response.data);
@@ -92,6 +93,8 @@ class AuthApis {
       if (response.statusCode == 200) {
         await SPHelper.spHelper.setToken(response.data['data']['token']);//save token in shared preferences
         await SPHelper.spHelper.setUserType(response.data['data']['user']['type']);//save userType in shared preferences
+        await SPHelper.spHelper.setUserName(response.data['data']['user']['name']);//save userName in shared preferences
+
         authController.getLoginModelData.value =
             LoginModel.fromJson(response.data);
         print(" LoginModel Successfull Stored${response.data}");
@@ -182,6 +185,7 @@ class AuthApis {
       if (response.statusCode == 200) {
         await SPHelper.spHelper.setToken(response.data['data']['token']);//save token in shared preferences
         await SPHelper.spHelper.setUserType(response.data['data']['patient']['type']);//save userType in shared preferences
+        await SPHelper.spHelper.setUserName(response.data['data']['patient']['name']);//save userName in shared preferences
 
         authController.getLoginModelData.value =
             LoginModel.fromJson(response.data);

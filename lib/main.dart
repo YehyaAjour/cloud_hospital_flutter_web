@@ -10,8 +10,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 /////
 import 'constants/style.dart';
+import 'controllers/app_controller.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/menu_controller.dart';
 import 'controllers/navigation_controller.dart';
@@ -20,12 +22,15 @@ import 'pages/404/error.dart';
 import 'pages/authentication/auth_page.dart';
 import 'pages/authentication/login_screen.dart';
 import 'pages/authentication/register_screen.dart';
+import 'pages/clients/widgets/client_disease.dart';
 import 'routing/routes.dart';
-Future<void>firebaseMessagingBackgroundHandler(RemoteMessage message)async{
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('backgroundMessage');
   print(message.data.toString());
 }
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -37,30 +42,35 @@ Future<void> main() async {
       projectId: "trustproject-72236",
     ),
   );
-  var token =await FirebaseMessaging.instance.getToken();
+  var token = await FirebaseMessaging.instance.getToken();
 
   FirebaseMessaging.onMessage.listen((event) {
     print('comeNotificcation');
+
     // print('yehyaabasem'+event.data['id'].toString());
-    Helper.setToast(event.notification.body);
-    Fluttertoast.showToast(msg: event.notification.body);
+    Get.snackbar(event.notification.title, event.notification.body,
+        backgroundColor: Colors.green.withOpacity(0.7),
+        colorText: Colors.white,
+    duration: const Duration(seconds: 5));
   });
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
-    Helper.setToast(event.notification.body);
+    Helper.setToast(event.notification.title);
     Fluttertoast.showToast(msg: event.notification.body);
     print('comeNotificcation');
     print(event.data.toString());
   });
-   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-   print(token);
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  print(token);
   await SPHelper.spHelper.initSharedPrefrences();
   Get.put(MenuController());
   Get.put(NavigationController());
   Get.put(AuthController());
   Get.put(DashboardController());
+  Get.put(AppController());
   runApp(MyApp());
   configLoading();
 }
+
 void configLoading() {
   EasyLoading.instance
     ..indicatorType = EasyLoadingIndicatorType.fadingCircle
@@ -85,34 +95,40 @@ class _MyAppState extends State<MyApp> {
     DashboardApis.dashboardApis.getSpecialties();
     super.initState();
   }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        initialRoute: SPHelper.spHelper.getToken() == '' ||
-            SPHelper.spHelper.getToken() == null?'/auth':'/',
-        unknownRoute: GetPage(name: '/not-found', page: () => PageNotFound(), transition: Transition.fadeIn),
-        getPages: [
-        GetPage(name: rootRoute, page: () {
-          return SiteLayout();
-        }),
+      initialRoute: SPHelper.spHelper.getToken() == '' ||
+              SPHelper.spHelper.getToken() == null
+          ? '/auth'
+          : '/',
+      unknownRoute: GetPage(
+          name: '/not-found',
+          page: () => PageNotFound(),
+          transition: Transition.fadeIn),
+      getPages: [
+        GetPage(
+            name: rootRoute,
+            page: () {
+              return SiteLayout();
+            }),
         GetPage(name: authenticationPageRoute, page: () => AuthPage()),
         GetPage(name: loginPageRoute, page: () => LoginScreen()),
         GetPage(name: registerPageRoute, page: () => RegisterScreen()),
+        GetPage(name: clientDiseasePageRoute, page: () => ClientDisease()),
       ],
       debugShowCheckedModeBanner: false,
       title: 'Hospital Cloud',
       theme: ThemeData(
         scaffoldBackgroundColor: light,
-        textTheme: GoogleFonts.mulishTextTheme(Theme.of(context).textTheme).apply(
-          bodyColor: Colors.black
-        ),
-            pageTransitionsTheme: const PageTransitionsTheme(
-      builders: {
-        TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
-        TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-      }
-    ),
+        textTheme: GoogleFonts.mulishTextTheme(Theme.of(context).textTheme)
+            .apply(bodyColor: Colors.black),
+        pageTransitionsTheme: const PageTransitionsTheme(builders: {
+          TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+        }),
         primarySwatch: Colors.blue,
       ),
       builder: EasyLoading.init(),

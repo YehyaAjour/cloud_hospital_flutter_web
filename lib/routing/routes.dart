@@ -17,6 +17,7 @@ const authenticationPageRoute = "/auth";
 const loginPageRoute = "/login";
 const registerPageRoute = "/register";
 const logoutPageRoute = "/logout";
+const clientDiseasePageRoute = "/clientDisease";
 
 //----------------------PationRoute-----------------
 const PationtoverviewPageDisplayName = "نظرة عامة";

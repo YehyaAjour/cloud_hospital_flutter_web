@@ -6,7 +6,10 @@ import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import '../../../apis/dashboard_apis.dart';
 import '../../../constants/style.dart';
 import '../../../controllers/dashboard_controller.dart';
+import '../../../model/disease_by_pationt_model.dart';
+import '../../../routing/routes.dart';
 import '../../../widgets/custom_text.dart';
+import 'client_disease.dart';
 
 /// Example without datasource
 class Clientstable extends StatelessWidget {
@@ -31,6 +34,7 @@ class Clientstable extends StatelessWidget {
       child: Obx(() => dashController.getAllPationtModelData.value.data == null
           ? Center(child: CircularProgressIndicator())
           : DataTable2(
+
               columnSpacing: 12,
               horizontalMargin: 12,
               minWidth: 600,
@@ -52,27 +56,40 @@ class Clientstable extends StatelessWidget {
               rows: List<DataRow>.generate(
                   DashboardApis.dashboardApis.patientList
                       .length,
-                  (index) => DataRow(cells: [
-                        DataCell(CustomText(
-                            text:  DashboardApis.dashboardApis.patientList[index].name)),
-                        DataCell(CustomText(
-                            text:  DashboardApis.dashboardApis.patientList[index].idNumber)),
-                        DataCell(CustomText(
-                            text:  DashboardApis.dashboardApis.patientList[index].gender)),
-                        DataCell(Container(
-                            decoration: BoxDecoration(
-                              color: light,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: active, width: .5),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
-                            child: CustomText(
-                              text: "Block",
-                              color: active.withOpacity(.7),
-                              weight: FontWeight.bold,
-                            ))),
-                      ])))),
+                  (index) {
+                    var patientList = DashboardApis.dashboardApis.patientList[index];
+                    return DataRow(
+
+
+                        cells: [
+                          DataCell(CustomText(
+                              text:  patientList.name)),
+                          DataCell(CustomText(
+                              text:  patientList.idNumber)),
+                          DataCell(CustomText(
+                              text:  patientList.gender)),
+                          DataCell(InkWell(
+                            onTap: (){
+                              dashController.getDiseaseByPatientModelData.value=
+                                  DiseaseByPatientModel.fromJson({});
+                              DashboardApis.dashboardApis.getDiseaseByPatient(patientList.id);
+                              Get.to(ClientDisease(name: patientList.name,patientId: patientList.id.toString(),),);},
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  color: light,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: active, width: .5),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 6),
+                                child: CustomText(
+                                  text: "تفاصيل",
+                                  color: active.withOpacity(.7),
+                                  weight: FontWeight.bold,
+                                )),
+                          )),
+                        ]);
+                  } ))),
     );
   }
 }

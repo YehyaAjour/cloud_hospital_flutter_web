@@ -1,11 +1,7 @@
-
 import 'package:flutter/material.dart';
 
 import '../constants/style.dart';
 import 'custom_text.dart';
-
-
-
 
 class CustomTextFormField extends StatelessWidget {
   final String label;
@@ -17,25 +13,32 @@ class CustomTextFormField extends StatelessWidget {
   final int maxLines;
   final IconData suffixIcon;
   final TextEditingController controller;
-  CustomTextFormField({
-    this.label,
-    this.hint,
-    this.onSaved,
-    this.validator,
-    this.textInputType,
-    this.isPassword = false,
-    this.maxLines,
-    this.suffixIcon,
-    this.controller
-  });
+  final Function onTap;
+  final TextAlign textAlign;
+
+  CustomTextFormField(
+      {this.label,
+      this.hint,
+      this.onSaved,
+      this.validator,
+      this.textInputType,
+      this.isPassword = false,
+      this.maxLines,
+      this.suffixIcon,
+      this.controller,
+      this.textAlign,
+      this.onTap});
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textAlign: textAlign??TextAlign.start,
+      onTap: onTap,
       controller: controller,
       onSaved: (value) => onSaved(value),
       validator: (newValue) => validator(newValue),
       obscureText: isPassword,
-      maxLines: maxLines??1,
+      maxLines: maxLines ?? 1,
       minLines: 1,
       keyboardType: textInputType ?? TextInputType.text,
       // initialValue: hint ?? "",
@@ -46,8 +49,7 @@ class CustomTextFormField extends StatelessWidget {
           suffixIcon,
         ),
       ),
-      style: TextStyle(fontSize: 15,height: 2.5),
-
+      style: TextStyle(fontSize: 15, height: 2.5),
     );
   }
 }
