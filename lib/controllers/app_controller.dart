@@ -4,7 +4,24 @@ import 'package:get/get.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class AppController extends GetxController{
-  //============ DatePicker =============
+  //-----------------------------------DatePicker--------------------------------
+  DateTime selectedDate = DateTime.now();
+  TextEditingController fromDateController = TextEditingController();
+
+  Future fromDateFun(BuildContext context) async {
+    final DateTime selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2010),
+      lastDate: DateTime(2025),
+      initialEntryMode: DatePickerEntryMode.calendar,
+    );
+    if (selected != null && selected != selectedDate) {
+      fromDateController.text = DateFormat.yMMMd().format(selected);
+      update();
+    }
+  }
+  //============ TimePicker =============
   TextEditingController timeController = TextEditingController();
 
   selectTime(BuildContext context) async {

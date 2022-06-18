@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "cloudhospitalfirebase"
-  }
+    "default": "cloudhospitalfirebase",
+    " ": "cloudhospital-63925",
+    "cloudHospital": "cloudhospitalfirebase",
+    "cloudhospitalfirebase": "cloudhospitalfirebase"
+  },
+  "targets": {}
 }

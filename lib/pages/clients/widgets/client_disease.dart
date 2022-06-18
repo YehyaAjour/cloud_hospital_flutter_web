@@ -229,6 +229,21 @@ class _ClientDiseaseState extends State<ClientDisease> {
                                                         ),
                                                         CustomTextFormField(
                                                           controller: appController
+                                                              .fromDateController,
+                                                          hint: 'الموعد',
+                                                          onTap: () {
+                                                            appController
+                                                                .fromDateFun(
+                                                                context);
+                                                          },
+                                                          textAlign: TextAlign
+                                                              .center,
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 15,
+                                                        ),
+                                                        CustomTextFormField(
+                                                          controller: appController
                                                               .timeController,
                                                           hint: 'الموعد',
                                                           onTap: () {
@@ -257,7 +272,7 @@ class _ClientDiseaseState extends State<ClientDisease> {
                                                                         .getDiseaseByPatientModelData
                                                                         .value
                                                                         .data[index].id.toString(),
-                                                                    appController.timeController.text);
+                                                                    appController.timeController.text+appController.fromDateController.text);
                                                               },
                                                               title: 'تعيين',
                                                               btnColor: primaryColor,
